@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\GeneticAlgorithm\TimetableGA;
 use Illuminate\Http\Request;
 use App\Services\TimetableService;
 use App\Events\TimetablesRequested;
@@ -24,8 +25,8 @@ class TimetablesController extends Controller
     public function __construct(TimetableService $service)
     {
         $this->service = $service;
-        $this->middleware('auth');
-        $this->middleware('activated');
+//        $this->middleware('auth');
+//        $this->middleware('activated');
     }
 
     /**
@@ -85,7 +86,7 @@ class TimetablesController extends Controller
         }
 
         $timetable = Timetable::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => 1,
             'academic_period_id' => $request->academic_period_id,
             'status' => 'IN PROGRESS',
             'name' => $request->name
@@ -94,7 +95,8 @@ class TimetablesController extends Controller
         if ($timetable) {
             $timetable->days()->sync($dayIds);
         }
-
+//        $timetableGA = new TimetableGA($timetable);
+//        $timetableGA->run();
         event(new TimetablesRequested($timetable));
 
         return response()->json(['message' => 'Timetables are being generated.Check back later'], 200);

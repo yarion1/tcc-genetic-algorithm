@@ -13,15 +13,15 @@ class CollegeClass extends Model
 
     protected $guarded = ['id'];
 
-    protected $relations = ['courses', 'unavailable_rooms'];
+    protected $relations = ['courses'];
 
     /**
      * Get the rooms that are not available to this class
      */
-    public function unavailable_rooms()
-    {
-        return $this->belongsToMany(Room::class, 'unavailable_rooms', 'class_id', 'room_id');
-    }
+//    public function unavailable_rooms()
+//    {
+//        return $this->belongsToMany(Room::class, 'unavailable_rooms', 'class_id', 'room_id');
+//    }
 
     public function courses()
     {

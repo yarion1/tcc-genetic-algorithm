@@ -28,4 +28,9 @@ class Room extends Model
     {
         return $this->belongsToMany(Course::class, 'favourite_rooms', 'room_id', 'course_id');
     }
+
+    public function unavailable_rooms()
+    {
+        return $this->hasMany(UnavailableRooms::class, 'room_id');
+    }
 }

@@ -121,16 +121,16 @@ class Timetable
      *
      * @param int $roomId ID of room
      */
-    public function addRoom($roomId)
+    public function addRoom($roomId, $unavailableSlots)
     {
-        $this->rooms[$roomId] = new Room($roomId);
+        $this->rooms[$roomId] = new Room($roomId, $unavailableSlots);
     }
 
     /**
      * Add a professor
      *
      * @param int $professorId Id of professor
-     * @param string $unavailableSlots Slots that the professor can't teach
+     * @param array $unavailableSlots Slots that the professor can't teach
      */
     public function addProfessor($professorId, $unavailableSlots)
     {
@@ -404,17 +404,33 @@ class Timetable
 
         foreach ($this->classes as $id => $classA) {
             $roomCapacity = $this->getRoom($classA->getRoomId())->getCapacity();
+            $roomAvailable = $this->getRoom($classA->getRoomId())->getOccupiedSlots();
             $groupSize = $this->getGroup($classA->getGroupId())->getSize();
             $professor = $this->getProfessor($classA->getProfessorId());
             $timeslot = $this->getTimeslot($classA->getTimeslotId());
             $module = $this->getModule($classA->getModuleId());
+            $groupImpar = $this->getGroup($classA->getGroupId())->getId() % 2 != 0;
+            $timeslotId = $timeslot->getTimeslotId();
 
             if ($roomCapacity < $groupSize) {
+                $clashes++;
+            }
+//            dd($timeslot->getTimeslotId());
+////            dd($this->getGroup($classA->getGroupId())->getId());
+            if ($groupImpar && $timeslotId != 2){
+                $clashes++;
+            }
+
+            if (!$groupImpar && $timeslotId != 1) {
                 $clashes++;
             }
 
             // Check if we don't have any lecturer forced to teach at his occupied time
             if (in_array($timeslot->getId(), $professor->getOccupiedSlots())) {
+                $clashes++;
+            }
+            // Check if we don't have any lecturer forced to room at his occupied time
+            if (in_array($timeslot->getId(), $roomAvailable)) {
                 $clashes++;
             }
 
@@ -428,10 +444,9 @@ class Timetable
                 }
             }
 
-
-            if (in_array($classA->getRoomId(), $this->getGroup($classA->getGroupId())->getUnavailableRooms())) {
-                $clashes++;
-            }
+//            if (in_array($classA->getRoomId(), $this->getGroup($classA->getGroupId())->getUnavailableRooms())) {
+//                $clashes++;
+//            }
 
             // Check if professor is available
             foreach ($this->classes as $id => $classB) {

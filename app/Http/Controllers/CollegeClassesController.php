@@ -23,8 +23,8 @@ class CollegeClassesController extends Controller
     public function __construct(CollegeClassesService $service)
     {
         $this->service = $service;
-        $this->middleware('auth');
-        $this->middleware('activated');
+//        $this->middleware('auth');
+//        $this->middleware('activated');
     }
 
     /**

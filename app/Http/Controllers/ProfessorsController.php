@@ -30,8 +30,8 @@ class ProfessorsController extends Controller
     public function __construct(ProfessorsService $service)
     {
         $this->service = $service;
-        $this->middleware('auth');
-        $this->middleware('activated');
+//        $this->middleware('auth');
+//        $this->middleware('activated');
     }
 
     /**

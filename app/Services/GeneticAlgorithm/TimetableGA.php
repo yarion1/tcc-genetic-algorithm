@@ -46,7 +46,12 @@ class TimetableGA
         $rooms = RoomModel::all();
 
         foreach ($rooms as $room) {
-            $timetable->addRoom($room->id);
+            $unavailableSlotIds = [];
+
+            foreach ($room->unavailable_rooms as $timeslot) {
+                $unavailableSlotIds[] = 'D' . $timeslot->day_id . 'T' . $timeslot->timeslot_id;
+            }
+            $timetable->addRoom($room->id, $unavailableSlotIds);
         }
 
         // Set up timeslots
@@ -112,7 +117,6 @@ class TimetableGA
 
             $timetable->addGroup($class->id, $courseIds);
         }
-
 
         return $timetable;
     }

@@ -9,7 +9,8 @@
         "barryvdh/laravel-dompdf": "^2.0",
         "laravel/framework": "10.*.*",
         "laravel/tinker": "~2.8",
-        "pda/pheanstalk": "^4.0"
+        "pda/pheanstalk": "^4.0",
+        "pusher/pusher-php-server": "^7.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8",

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Day;
+use App\Models\Timeslot;
 use Response;
 use Illuminate\Http\Request;
 
@@ -24,8 +26,8 @@ class RoomsController extends Controller
      */
     public function __construct(RoomsService $service)
     {
-        $this->middleware('auth');
-        $this->middleware('activated');
+//        $this->middleware('auth');
+//        $this->middleware('activated');
         $this->service = $service;
     }
 
@@ -44,11 +46,14 @@ class RoomsController extends Controller
             'per_page' => 20
         ]);
 
+        $days = Day::all();
+        $timeslots = Timeslot::all();
+
         if ($request->ajax()) {
             return view('rooms.table', compact('rooms'));
         }
 
-        return view('rooms.index', compact('rooms'));
+        return view('rooms.index', compact('rooms', 'days', 'timeslots'));
     }
 
     /**

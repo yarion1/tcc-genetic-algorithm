@@ -23,11 +23,13 @@ class Room
      * Create a new room
      *
      * @param int $roomId ID of room
+     * @param array $occupiedSlots Timeslots that the room is not available
      */
-    public function __construct($roomId)
+    public function __construct($roomId, $occupiedSlots)
     {
         $this->roomId = $roomId;
         $this->model = RoomModel::find($roomId);
+        $this->occupiedSlots = $occupiedSlots;
     }
 
     /**
@@ -58,5 +60,10 @@ class Room
     public function getCapacity()
     {
         return $this->model->capacity;
+    }
+
+    public function getOccupiedSlots()
+    {
+        return $this->occupiedSlots;
     }
 }
