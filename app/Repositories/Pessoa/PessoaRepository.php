@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Pessoa;
 
-use App\Models\Pessoa;
+use App\Models\ModelFront\Pessoa;
 use App\Repositories\BaseRepository;
 
 class PessoaRepository extends BaseRepository

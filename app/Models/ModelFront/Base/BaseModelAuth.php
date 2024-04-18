@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Base;
+namespace App\Models\ModelFront\Base;
 
 use App\Models\PerfilMenu;
 use Illuminate\Auth\Authenticatable;

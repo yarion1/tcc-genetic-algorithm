@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Pessoa;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pessoa\PessoaRequest;
-use App\Models\Curso;
-use App\Models\Pessoa;
+use App\Models\ModelFront\Curso;
+use App\Models\ModelFront\Pessoa;
 use App\Services\Pessoa\PessoaService;
 use Dotenv\Validator;
 use Illuminate\Http\Request;

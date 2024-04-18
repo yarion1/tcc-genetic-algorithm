@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models\Base;
+namespace App\Models\ModelFront\Base;
 
-use App\Models\Pessoa;
-use App\Models\Scopes\ActiveScope;
+use App\Models\ModelFront\Pessoa;
+use App\Models\ModelFront\Scopes\ActiveScope;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

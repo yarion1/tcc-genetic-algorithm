@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Base;
+namespace App\Models\ModelFront\Base;
 
 class BaseModel extends BaseModelCommom
 {

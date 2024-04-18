@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Base\BaseModel;
+use App\Models\ModelFront\Base\BaseModel;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;

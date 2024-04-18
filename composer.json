@@ -9,6 +9,7 @@
         "barryvdh/laravel-dompdf": "^2.0",
         "laravel/framework": "10.*.*",
         "laravel/tinker": "~2.8",
+        "owen-it/laravel-auditing": "^13.6",
         "pda/pheanstalk": "^4.0",
         "pusher/pusher-php-server": "^7.2",
         "tymon/jwt-auth": "^2.1"
