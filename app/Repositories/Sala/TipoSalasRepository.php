@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Sala;
 
-use App\Models\TiposSalas;
+use App\Models\ModelFront\TiposSalas;
 use App\Repositories\BaseRepository;
 
 class TipoSalasRepository extends BaseRepository

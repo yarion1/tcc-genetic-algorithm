@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Sala;
 
-use App\Models\Sala;
+use App\Models\ModelFront\Sala;
 use App\Repositories\BaseRepository;
 
 class SalaRepository extends BaseRepository

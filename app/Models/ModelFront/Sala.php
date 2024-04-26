@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\ModelFront;
 
-use App\Models\Base\BaseModel;
+use App\Models\ModelFront\Base\BaseModel;
 
 class Sala extends BaseModel
 {

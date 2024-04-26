@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use App\Models\Base\BaseModel;
+use App\Models\ModelFront\Base\BaseModel;
 
 class {{ class }} extends BaseModel
 {

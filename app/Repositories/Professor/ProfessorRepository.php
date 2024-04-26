@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Professor;
 
-use App\Models\Professores;
+use App\Models\ModelFront\Professores;
 use App\Repositories\BaseRepository;
 
 class ProfessorRepository extends BaseRepository

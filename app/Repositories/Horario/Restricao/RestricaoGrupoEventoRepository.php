@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Horario\Restricao;
 
-use App\Models\RestricaoGrupoEvento;
+use App\Models\ModelFront\RestricaoGrupoEvento;
 use App\Repositories\BaseRepository;
 
 class RestricaoGrupoEventoRepository extends BaseRepository

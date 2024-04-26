@@ -2,7 +2,6 @@
 
 namespace App\Models\ModelFront\Base;
 
-use App\Models\PerfilMenu;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;

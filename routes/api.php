@@ -32,7 +32,7 @@ Route::post('/login', [PessoaController::class, 'login']);
 Route::post('/register', [PessoaController::class, 'register']);
 Route::get('/cursos', [PessoaController::class, 'cursos']);
 
-Route::middleware([])->group(function () {
+Route::middleware('jwt.auth')->group(function () {
 
     Route::prefix('pessoa')->group(function () {
 

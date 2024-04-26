@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Horario\Restricao;
 
-use App\Models\RestricaoClassificacao;
+use App\Models\ModelFront\RestricaoClassificacao;
 use App\Repositories\BaseRepository;
 
 class RestricaoClassificacaoRepository extends BaseRepository

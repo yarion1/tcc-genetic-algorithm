@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Disciplina;
 
-use App\Models\Disciplina;
+use App\Models\ModelFront\Disciplina;
 use App\Repositories\BaseRepository;
 
 class DisciplinaRepository extends BaseRepository

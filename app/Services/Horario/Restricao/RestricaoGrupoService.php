@@ -2,11 +2,11 @@
 
 namespace App\Services\Horario\Restricao;
 
-use App\Models\RestricaoGrupo;
-use App\Models\RestricaoGrupoDisciplina;
-use App\Models\RestricaoGrupoEvento;
-use App\Models\RestricaoGrupoEventoDia;
-use App\Models\RestricaoGrupoSala;
+use App\Models\ModelFront\RestricaoGrupo;
+use App\Models\ModelFront\RestricaoGrupoDisciplina;
+use App\Models\ModelFront\RestricaoGrupoEvento;
+use App\Models\ModelFront\RestricaoGrupoEventoDia;
+use App\Models\ModelFront\RestricaoGrupoSala;
 use App\Models\Scopes\ActiveScope;
 use App\Repositories\Horario\Restricao\RestricaoGrupoRepository;
 use App\Repositories\Horario\Restricao\RestricaoRepository;

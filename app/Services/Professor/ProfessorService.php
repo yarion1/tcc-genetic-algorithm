@@ -2,9 +2,9 @@
 
 namespace App\Services\Professor;
 
-use App\Models\DisciplinasProfessores;
-use App\Models\DisponibilidadesProfessores;
-use App\Models\PrioridadesProfessores;
+use App\Models\ModelFront\DisciplinasProfessores;
+use App\Models\ModelFront\DisponibilidadesProfessores;
+use App\Models\ModelFront\PrioridadesProfessores;
 use App\Repositories\Professor\ProfessorRepository;
 use App\Services\BaseService;
 use App\Services\Pessoa\PessoaService;

@@ -2,9 +2,9 @@
 
 namespace App\Services\Horario;
 
-use App\Models\Evento;
-use App\Models\EventoDia;
-use App\Models\HorarioEvento;
+use App\Models\ModelFront\Evento;
+use App\Models\ModelFront\EventoDia;
+use App\Models\ModelFront\HorarioEvento;
 use App\Repositories\Horario\EventoRepository;
 use App\Repositories\Horario\HorarioRepository;
 use App\Services\BaseService;

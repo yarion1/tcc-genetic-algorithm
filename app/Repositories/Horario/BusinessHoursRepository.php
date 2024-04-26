@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Horario;
 
-use App\Models\BusinessHours;
+use App\Models\ModelFront\BusinessHours;
 use App\Repositories\BaseRepository;
 
 class BusinessHoursRepository extends BaseRepository

@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Horario;
 
-use App\Models\HorarioEvento;
+use App\Models\ModelFront\HorarioEvento;
 use App\Repositories\BaseRepository;
 
 class HorarioEventoRepository extends BaseRepository

@@ -2,7 +2,7 @@
 
 namespace App\Services\Horario;
 
-use App\Models\Evento;
+use App\Models\ModelFront\Evento;
 use App\Models\HorarioEventoSala;
 use App\Repositories\Horario\HorarioEventoRepository;
 use App\Repositories\Turma\TurmaRepository;
