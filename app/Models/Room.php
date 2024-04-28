@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\ModelFront\TiposSalas;
+
 class Room extends Model
 {
     /**
@@ -32,5 +34,10 @@ class Room extends Model
     public function unavailable_rooms()
     {
         return $this->hasMany(UnavailableRooms::class, 'room_id');
+    }
+
+    public function tipoSala()
+    {
+        return $this->belongsTo(TiposSalas::class);
     }
 }

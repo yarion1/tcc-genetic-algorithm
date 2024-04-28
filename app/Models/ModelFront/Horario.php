@@ -3,6 +3,7 @@
 namespace App\Models\ModelFront;
 
 use App\Models\ModelFront\Base\BaseModel;
+use App\Models\ProfessorSchedule;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -20,7 +21,7 @@ class Horario extends BaseModel
 
     public function horario(): HasMany
     {
-         return $this->hasMany(HorarioEvento::class, 'horario_id');
+         return $this->hasMany( ProfessorSchedule::class, 'horario_id');
     }
 
 }

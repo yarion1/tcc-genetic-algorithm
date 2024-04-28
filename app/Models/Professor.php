@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\ModelFront\Pessoa;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 
 class Professor extends Model
@@ -40,5 +42,10 @@ class Professor extends Model
     public function unavailable_timeslots()
     {
         return $this->hasMany(UnavailableTimeslot::class, 'professor_id');
+    }
+
+    public function pessoa(): BelongsTo
+    {
+        return $this->BelongsTo(Pessoa::class, 'pessoa_id');
     }
 }

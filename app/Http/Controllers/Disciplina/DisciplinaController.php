@@ -19,7 +19,7 @@ class DisciplinaController extends Controller
 
     public function index()
     {
-        return response()->json($this->service->find(with:['tipoSala:id,nome'])->get());
+        return response()->json($this->service->find()->get());
     }
 
     public function store(DisciplinaRequest $request)

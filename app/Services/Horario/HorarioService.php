@@ -4,7 +4,6 @@ namespace App\Services\Horario;
 
 use App\Models\ModelFront\Evento;
 use App\Models\ModelFront\EventoDia;
-use App\Models\ModelFront\HorarioEvento;
 use App\Repositories\Horario\EventoRepository;
 use App\Repositories\Horario\HorarioRepository;
 use App\Services\BaseService;
@@ -25,12 +24,12 @@ class HorarioService extends BaseService
         $resultHorario = $this->repository->create($dados);
 
 
-        for ($i = 1; $i <= 8; $i++) {
-            HorarioEvento::create([
-                'periodo' => $i,
-                'horario_id' => $resultHorario->id,
-            ]);
-        }
+//        for ($i = 1; $i <= 8; $i++) {
+//            HorarioEvento::create([
+//                'periodo' => $i,
+//                'horario_id' => $resultHorario->id,
+//            ]);
+//        }
 
         $resultHorario->load(['horario', 'horario.events']);
 
@@ -41,13 +40,11 @@ class HorarioService extends BaseService
     {
         $result = $this->find(with: [
             'horario',
-            'horario.events',
-            'horario.events.sala',
-            'horario.events.sala.tipoSala',
-            'horario.events.turma',
-            'horario.events.disciplina',
-            'horario.events.professor:id,pessoa_id,professor_cargo_id',
-            'horario.events.professor.pessoa:id,nome,apelido'
+            'horario.room',
+            'horario.room.tipoSala',
+            'horario.course',
+            'horario.professor:id',
+            'horario.professor.pessoa:id,nome,apelido'
         ])->findOrFail($id);
         // $result->horario->flatMap(function ($horario) {
         //     return $horario->events;
@@ -55,12 +52,12 @@ class HorarioService extends BaseService
         //     $evento->daysOfWeek = $evento->eventoDias->pluck('daysOfWeek')->toArray();
         // });
 
-        $result->horario->transform(function ($horario) {
-            $horario->events->transform(function ($evt) {
-                $evt->daysOfWeek = [$evt->daysOfWeek];
-                return $evt;
-            });
-            return $horario;
+
+        $result->horario->transform(function ($evt) {
+            $evt->daysOfWeek = [$evt->day_id];
+            unset($evt->day_id);
+
+            return $evt;
         });
 
         return $result;
