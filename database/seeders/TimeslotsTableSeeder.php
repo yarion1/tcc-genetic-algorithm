@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
@@ -11,7 +12,7 @@ class TimeslotsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('timeslots')->insert([
+        \DB::table('timeslots')->insert([
             [
                 'time' => '8:00 - 10:30',
                 'rank' => 1

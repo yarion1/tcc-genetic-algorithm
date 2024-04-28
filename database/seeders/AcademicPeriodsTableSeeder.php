@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
@@ -11,7 +12,7 @@ class AcademicPeriodsTableSeeder extends Seeder
      */
     public function run()
     {
-          DB::table('academic_periods')
+          \DB::table('academic_periods')
             ->insert([
                 ["name" => "Semester I"],
                 ["name" => "Semester II"],

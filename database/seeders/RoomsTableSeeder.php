@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
@@ -11,7 +12,7 @@ class RoomsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('rooms')->insert([
+        \DB::table('rooms')->insert([
             [
                 'name' => 'SF 19',
                 'capacity' => 180

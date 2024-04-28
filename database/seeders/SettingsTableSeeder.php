@@ -1,4 +1,7 @@
 <?php
+namespace Database\Seeders;
+
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
@@ -11,7 +14,7 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('settings')->insert([
+        \DB::table('settings')->insert([
             [
                 'name' => 'Mutation Rate',
                 'value' => ''

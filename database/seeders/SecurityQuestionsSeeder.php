@@ -1,5 +1,6 @@
 <?php
 
+namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 class SecurityQuestionsSeeder extends Seeder
@@ -11,7 +12,7 @@ class SecurityQuestionsSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('security_questions')
+        \DB::table('security_questions')
             ->insert([
                 ["question" => "In which city were you born?"],
                 ["question" => "In which town was your dad born?"],

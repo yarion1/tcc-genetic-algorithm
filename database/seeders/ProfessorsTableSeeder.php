@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
@@ -11,7 +12,7 @@ class ProfessorsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('professors')->insert([
+        \DB::table('professors')->insert([
             [
                 'name' => 'Dr Theophilus Asare'
             ],
@@ -47,7 +48,7 @@ class ProfessorsTableSeeder extends Seeder
             ]
         ]);
 
-        DB::table('courses_professors')->insert([
+        \DB::table('courses_professors')->insert([
             [
                 'course_id' => 1,
                 'professor_id' => 1
@@ -150,7 +151,7 @@ class ProfessorsTableSeeder extends Seeder
             ]
         ]);
 
-        DB::table('unavailable_timeslots')->insert([
+        \DB::table('unavailable_timeslots')->insert([
             [
                 'professor_id' => 2,
                 'day_id' => 1,

@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
@@ -43,10 +44,10 @@ class DaysTableSeeder extends Seeder
         ];
 
         foreach ($days as $day) {
-            $existing = DB::table('days')->where('name', $day['name'])->first();
+            $existing = \DB::table('days')->where('name', $day['name'])->first();
 
             if (!$existing) {
-                DB::table('days')->insert($day);
+                \DB::table('days')->insert($day);
             }
         }
     }

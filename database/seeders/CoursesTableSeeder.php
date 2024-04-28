@@ -1,5 +1,5 @@
 <?php
-
+namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 class CoursesTableSeeder extends Seeder
@@ -11,7 +11,7 @@ class CoursesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('courses')->insert([
+        \DB::table('courses')->insert([
             [
                 'name' => 'Computer Architecture',
                 'course_code' => 'CSM 301'
