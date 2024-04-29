@@ -49,6 +49,7 @@ class CollegeClassesController extends Controller
 
 
         if ($request->ajax()) {
+
             return view('classes.table', compact('classes', 'academicPeriods'));
         }
 
