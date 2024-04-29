@@ -3,25 +3,23 @@
 namespace App\Services\Horario;
 
 use App\Repositories\Horario\EventoRepository;
-use App\Repositories\Horario\HorarioEventoRepository;
 use App\Services\BaseService;
 
 class EventoService extends BaseService
 {
-    protected $repository, $horarioEventoRepository;
+    protected $repository;
 
-    public function __construct(EventoRepository $repository, HorarioEventoRepository $horarioEventoRepository)
+    public function __construct(EventoRepository $repository)
     {
         $this->repository = $repository;
-        $this->horarioEventoRepository = $horarioEventoRepository;
     }
 
     public function createEventoHorario(mixed $dados)
     {
-        $resultHorarioEvento = $this->horarioEventoRepository->getModel()->where('horario_id', $dados['horario_id'])->where('periodo', $dados['periodo'])->firstOrFail();
+        // $resultHorarioEvento = $this->horarioEventoRepository->getModel()->where('horario_id', $dados['horario_id'])->where('periodo', $dados['periodo'])->firstOrFail();
 
         $resultEvento = $this->repository->create([
-            'horario_evento_id' => $resultHorarioEvento->id,
+            'periodo_id' => $dados['periodo'],
             'title' => $dados['title'],
             'startTime' => $dados['startTime'],
             'endTime' => $dados['endTime'],

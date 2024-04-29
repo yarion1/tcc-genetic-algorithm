@@ -40,6 +40,8 @@ class HorarioService extends BaseService
     {
         $result = $this->find(with: [
             'horario',
+            // 'college_class',
+            'horario.college_class',
             'horario.room',
             'horario.room.tipoSala',
             'horario.course',
