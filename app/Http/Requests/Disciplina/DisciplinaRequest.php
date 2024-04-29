@@ -15,11 +15,11 @@ class DisciplinaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nome' => 'required|string',
-            'sigla' => 'string',
-            'tipo_sala_id' => 'required|numeric',
-            'periodo' => 'required|numeric',
-            'carga_horaria' => 'required|numeric',
+            'name' => 'required|string',
+            'course_code' => 'required|string',
+            'tipo_sala_id' => 'nullable|numeric',
+            'periodo' => 'nullable|numeric',
+            'carga_horaria' => 'nullable|numeric',
         ];
     }
 }

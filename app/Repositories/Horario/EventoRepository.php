@@ -2,14 +2,14 @@
 
 namespace App\Repositories\Horario;
 
-use App\Models\ModelFront\Evento;
+use App\Models\ProfessorSchedule;
 use App\Repositories\BaseRepository;
 
 class EventoRepository extends BaseRepository
 {
     protected $model;
 
-    public function __construct(Evento $model)
+    public function __construct(ProfessorSchedule $model)
     {
         $this->model = $model;
     }

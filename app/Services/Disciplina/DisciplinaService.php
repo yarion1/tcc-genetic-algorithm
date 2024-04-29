@@ -17,7 +17,7 @@ class DisciplinaService extends BaseService
 
     protected function beforeCreate(array $inputData): array
     {
-        $exists = $this->repository->findByKey(query: [['nome', $inputData['nome']]])->first();
+        $exists = $this->repository->findByKey(query: [['name', $inputData['name']]])->first();
 
         if ($exists) {
             throw new Exception('Já existe uma disciplina com este nome.');
