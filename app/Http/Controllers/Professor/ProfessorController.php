@@ -32,7 +32,8 @@ class ProfessorController extends Controller
 
     public function show(int $id)
     {
-        return response()->json($this->service->find(with:['disciplinas', 'disciplinas.disciplina', 'prioridades', 'disponibilidades', 'pessoa'])->findOrFail($id));
+        // return response()->json($this->service->find(with:['disciplinas', 'disciplinas.disciplina', 'prioridades', 'disponibilidades', 'pessoa'])->findOrFail($id));
+        return response()->json($this->service->find(with:['courses', 'pessoa'])->findOrFail($id));
     }
 
     public function update(ProfessorRequest $request, int $id)

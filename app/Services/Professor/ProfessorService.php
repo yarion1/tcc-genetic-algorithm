@@ -31,7 +31,7 @@ class ProfessorService extends BaseService
             'carga_horaria' => $inputData['carga_horaria']
         ]);
 
-        foreach ($inputData['disciplinas'] as $disciplinaId) {
+        foreach ($inputData['courses'] as $disciplinaId) {
             CoursesProfessor::create(
                 [
                     'professor_id' => $professor['id'],
@@ -67,7 +67,7 @@ class ProfessorService extends BaseService
         PrioridadesProfessores::where('professor_id', $id)->delete();
         DisponibilidadesProfessores::where('professor_id', $id)->delete();
 
-        foreach ($inputData['disciplinas'] as $disciplinaId) {
+        foreach ($inputData['courses'] as $disciplinaId) {
             CoursesProfessor::updateOrCreate(
                 [
                     'professor_id' => $id,
