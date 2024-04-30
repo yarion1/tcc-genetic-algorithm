@@ -20,8 +20,8 @@ class ProfessorRequest extends FormRequest
             'disciplinas' => 'required|array',
             'carga_horaria' => 'required|numeric',
             'cpf' => 'required|string',
-            'disponibilidades' => 'required|array',
-            'prioridades' => 'required|array',
+            // 'disponibilidades' => 'required|array',
+            // 'prioridades' => 'required|array',
             'email' => 'required|string',
             'senha' => 'nullable|string',
         ];

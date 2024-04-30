@@ -29,8 +29,8 @@ class EventoService extends BaseService
             'title' => $dados['title'],
             'startTime' => $dados['startTime'],
             'endTime' => $dados['endTime'],
-            'room_id' => $dados['sala_id'],
-            'course_id' => $dados['disciplina_id'],
+            'room_id' => $dados['room_id'],
+            'course_id' => $dados['course_id'],
             'professor_id' => $dados['professor_id'],
             'day_id' => $dados['daysOfWeek'][0],
         ]);
