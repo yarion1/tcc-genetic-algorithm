@@ -4,6 +4,7 @@ namespace App\Services\Horario;
 
 use App\Repositories\Horario\EventoRepository;
 use App\Services\BaseService;
+use App\Models\CollegeClass;
 
 class EventoService extends BaseService
 {
@@ -18,8 +19,13 @@ class EventoService extends BaseService
     {
         // $resultHorarioEvento = $this->horarioEventoRepository->getModel()->where('horario_id', $dados['horario_id'])->where('periodo', $dados['periodo'])->firstOrFail();
 
+        $periodoId = CollegeClass::where('period', $dados['periodo'])->first();
+
         $resultEvento = $this->repository->create([
-            'class_id' => $dados['periodo'],
+            'horario_id' => $dados['horario_id'],
+            'timeslot_id' => $dados['timeslot_id'],
+            'timetable_id' =>  85,
+            'class_id' => $periodoId['id'],
             'title' => $dados['title'],
             'startTime' => $dados['startTime'],
             'endTime' => $dados['endTime'],
@@ -30,7 +36,7 @@ class EventoService extends BaseService
         ]);
 
         $resultEvento->load(['room']);
-        $result = [...$resultEvento->toArray(), 'periodo' => $resultHorarioEvento->periodo];
+        $result = [...$resultEvento->toArray(), 'periodo' => $dados['periodo']];
         return $result;
     }
 }

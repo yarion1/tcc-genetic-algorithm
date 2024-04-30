@@ -31,7 +31,7 @@ class HorarioService extends BaseService
 //            ]);
 //        }
 
-        $resultHorario->load(['horario', 'horario.events']);
+        $resultHorario->load(['horario']);
 
         return $resultHorario;
     }

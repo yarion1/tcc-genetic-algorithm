@@ -15,12 +15,22 @@ class Professor extends Model
      *
      * @var string
      */
+    
     protected $table = 'professors';
-
     /**
      * Non-mass assignable fields
      */
-    protected $guarded = ['id'];
+    protected $guarded = [
+        'id',
+        'ativo',
+        'criado_por',
+        'criado_em',
+        'atualizado_por',
+        'atualizado_em',
+        'excluido_por',
+        'excluido_em'
+    ];
+
 
     /**
      * Declare relationship between a professor and the courses
@@ -48,4 +58,19 @@ class Professor extends Model
     {
         return $this->BelongsTo(Pessoa::class, 'pessoa_id');
     }
+
+    // public function disciplinas(): HasMany
+    // {
+    //     return $this->hasMany(Course::class, 'professor_id');
+    // }
+
+    // public function disponibilidades(): HasMany
+    // {
+    //     return $this->hasMany(DisponibilidadesProfessores::class, 'professor_id');
+    // }
+
+    // public function prioridades(): HasMany
+    // {
+    //     return $this->hasMany(PrioridadesProfessores::class, 'professor_id');
+    // }
 }
