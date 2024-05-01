@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\Disciplina\DisciplinaController;
 use App\Http\Controllers\Horario\BusinessHoursController;
+use App\Http\Controllers\Horario\DayController;
+use App\Http\Controllers\TimeslotsController;
 use App\Http\Controllers\Horario\EventoController;
 use App\Http\Controllers\Horario\HorarioController;
 use App\Http\Controllers\Horario\HorarioEventoController;
@@ -97,9 +99,19 @@ Route::middleware('jwt.auth')->group(function () {
     });
 
     Route::prefix('business-hours')->group(function () {
-        Route::controller(BusinessHoursController::class)->group(function () {
-            Route::get('/', 'index');
+        Route::prefix('days')->group(function () {
+            Route::controller(DayController::class)->group(function () {
+                Route::get('/', 'index');
+            });
         });
+        Route::prefix('timeslots')->group(function () {
+            Route::controller(TimeslotsController::class)->group(function () {
+                Route::get('/', 'selects');
+            });
+        });
+        // Route::controller(BusinessHoursController::class)->group(function () {
+        //     Route::get('/', 'index');
+        // });
     });
 
     Route::prefix('horario')->group(function () {

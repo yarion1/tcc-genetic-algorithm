@@ -1,43 +1,40 @@
 <?php
 
-namespace App\Http\Controllers\Horario\Restricao;
+namespace App\Http\Controllers\Horario;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Horario\Restricao\RestricaoRequest;
-use App\Models\ModelFront\Scopes\ActiveScope;
-use App\Services\Horario\Restricao\RestricaoService;
 use Illuminate\Http\Request;
+use App\Services\Horario\DayService;
 
-class RestricaoController extends Controller
+class DayController extends Controller
 {
     protected $service;
 
-    public function __construct(RestricaoService $service)
+    public function __construct(DayService $service)
     {
         $this->service = $service;
     }
 
     public function index()
     {
-        $result = $this->service->findRestricao(null);
-        return response()->json($result);
+        return response()->json($this->service->find()->get());
     }
 
-    public function store(RestricaoRequest $request)
+
+    public function store(Request $request)
     {
         $validated = $request->all();
-        $this->service->createRestricoes($validated);
+        $this->service->create($validated);
         return response()->json(['message' => 'Registro Cadastrado.']);
     }
 
 
     public function show(int $id)
     {
-        $result = $this->service->findRestricao($id);
-        return response()->json($result);
+        return response()->json($this->service->find()->findOrFail($id));
     }
 
-    public function update(RestricaoRequest $request, int $id)
+    public function update(Request $request, int $id)
     {
         $validated = $request->all();
         $this->service->update($id, $validated);

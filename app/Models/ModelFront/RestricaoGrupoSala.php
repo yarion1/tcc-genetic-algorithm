@@ -19,6 +19,6 @@ class RestricaoGrupoSala extends BaseModel
 
     public function sala(): BelongsTo
     {
-         return $this->BelongsTo(Sala::class, 'sala_id');
+         return $this->BelongsTo(Room::class, 'sala_id');
     }
 }

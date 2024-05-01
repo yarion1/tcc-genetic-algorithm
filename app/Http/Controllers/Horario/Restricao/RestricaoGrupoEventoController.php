@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Horario\Restricao;
 
 use App\Http\Controllers\Controller;
-use App\Models\Scopes\ActiveScope;
+use App\Models\ModelFront\Scopes\ActiveScope;
 use App\Services\Horario\Restricao\RestricaoGrupoEventoService;
 use Illuminate\Http\Request;
 

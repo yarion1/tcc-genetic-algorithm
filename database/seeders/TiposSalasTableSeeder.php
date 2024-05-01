@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\TiposSalas;
+use App\Models\ModelFront\TiposSalas;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

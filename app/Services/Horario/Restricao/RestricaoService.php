@@ -3,7 +3,7 @@
 namespace App\Services\Horario\Restricao;
 
 use App\Models\ModelFront\RestricaoGrupo;
-use App\Models\Scopes\ActiveScope;
+use App\Models\ModelFront\Scopes\ActiveScope;
 use App\Repositories\Horario\Restricao\RestricaoRepository;
 use App\Services\BaseService;
 use Exception;
@@ -36,7 +36,7 @@ class RestricaoService extends BaseService
 
     public function findRestricao(int $id)
     {
-        $result = $this->find(with: ['restricao', 'restricao.events',  'restricao.events.salas', 'restricao.events.disciplinas', 'restricao.events.salas.sala:id,nome,capacidade', 'restricao.events.disciplinas.disciplina:id,nome'])->findOrFail($id);;
+        $result = $this->repository->find(with: ['restricao', 'restricao.events',  'restricao.events.salas', 'restricao.events.disciplinas', 'restricao.events.salas', 'restricao.events.disciplinas'])->findOrFail($id);;
 
         $result->restricao->transform(function ($restricao) {
             $restricao->events->transform(function ($evt) {

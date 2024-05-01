@@ -19,6 +19,6 @@ class RestricaoGrupoDisciplina extends BaseModel
 
     public function disciplina(): BelongsTo
     {
-         return $this->BelongsTo(Disciplina::class, 'disciplina_id');
+         return $this->BelongsTo(Course::class, 'disciplina_id');
     }
 }

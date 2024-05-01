@@ -2,7 +2,7 @@
 
 namespace App\Services\Horario\Restricao;
 
-use App\Models\Scopes\ActiveScope;
+use App\Models\ModelFront\Scopes\ActiveScope;
 use App\Repositories\Horario\Restricao\RestricaoGrupoEventoRepository;
 use App\Services\BaseService;
 

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\RestricaoGrupo;
+use App\Models\ModelFront\RestricaoGrupo;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

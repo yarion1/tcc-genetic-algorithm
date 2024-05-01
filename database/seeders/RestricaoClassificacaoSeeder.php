@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\RestricaoClassificacao;
+use App\Models\ModelFront\RestricaoClassificacao;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
