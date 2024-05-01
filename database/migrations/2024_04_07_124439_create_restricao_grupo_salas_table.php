@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('restricoes', function (Blueprint $table) {
+        Schema::create('restricao_grupo_salas', function (Blueprint $table) {
             $table->id();
-
+            $table->foreignId('restricao_grupo_evento_id')->constrained('restricao_grupo_eventos');
+            $table->foreignId('sala_id')->constrained('rooms');
+            
             $table->boolean('ativo')->default(true);
             $table->unsignedBigInteger('criado_por')->nullable();
             $table->timestamp('criado_em')->nullable();
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('restricoes');
+        Schema::dropIfExists('restricao_grupo_salas');
     }
 };
