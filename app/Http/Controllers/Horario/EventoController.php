@@ -39,7 +39,7 @@ class EventoController extends Controller
     public function update(Request $request, int $id)
     {
         $validated = $request->all();
-        $this->service->update($id, $validated);
+        $result = $this->service->update($id, $validated);
         return response()->json(['message' => 'Registro Atualizado.']);
     }
 

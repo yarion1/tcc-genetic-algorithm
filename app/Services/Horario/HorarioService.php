@@ -46,7 +46,8 @@ class HorarioService extends BaseService
             'horario.room.tipoSala',
             'horario.course',
             'horario.professor:id',
-            'horario.professor.pessoa:id,nome,apelido'
+            'horario.professor.pessoa:id,nome,apelido',
+            'horario.day',
         ])->findOrFail($id);
         // $result->horario->flatMap(function ($horario) {
         //     return $horario->events;
@@ -56,7 +57,7 @@ class HorarioService extends BaseService
 
 
         $result->horario->transform(function ($evt) {
-            $evt->daysOfWeek = [$evt->day_id];
+            $evt->daysOfWeek = [$evt->day->daysOfWeek];
             unset($evt->day_id);
 
             return $evt;
