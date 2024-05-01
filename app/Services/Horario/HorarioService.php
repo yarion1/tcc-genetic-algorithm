@@ -58,7 +58,7 @@ class HorarioService extends BaseService
 
         $result->horario->transform(function ($evt) {
             $evt->daysOfWeek = [$evt->day->daysOfWeek];
-            unset($evt->day_id);
+            unset($evt->day);
 
             return $evt;
         });

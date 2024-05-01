@@ -32,11 +32,22 @@ class EventoService extends BaseService
             'room_id' => $dados['room_id'],
             'course_id' => $dados['course_id'],
             'professor_id' => $dados['professor_id'],
-            'day_id' => $dados['daysOfWeek'][0],
+            'day_id' => $dados['day_id'],
         ]);
 
-        $resultEvento->load(['room']);
+        $resultEvento->load(['room', 'day']);
+        $resultEvento->daysOfWeek = [$resultEvento->day->daysOfWeek];
+
         $result = [...$resultEvento->toArray(), 'periodo' => $dados['periodo']];
         return $result;
+    }
+
+    protected function beforeUpdate(array $inputData, int $id): array
+    {
+        if(!isset($inputData['drop'])) {
+            $periodoId = CollegeClass::where('period', $inputData['periodo'])->first();
+            $inputData['class_id'] = $periodoId['id'];
+        }
+        return $inputData;
     }
 }

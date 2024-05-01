@@ -161,7 +161,8 @@ class BaseService
     {
         return DB::transaction(function () use ($id, $inputData, $relations) {
             $toUpdate = $this->preventFileSerialization($inputData);
-            $updatedData = $this->repository->update($id, $toUpdate);
+            $inputData = $this->beforeUpdate($toUpdate, $id);
+            $updatedData = $this->repository->update($id, $inputData);
             $this->updateRelations($updatedData, $inputData, $relations);
             $updateReturn = $this->afterUpdate($updatedData, $inputData);
 
