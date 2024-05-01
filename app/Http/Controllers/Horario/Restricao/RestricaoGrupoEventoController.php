@@ -18,7 +18,7 @@ class RestricaoGrupoEventoController extends Controller
 
     public function index()
     {
-        return response()->json($this->service->find(with:['classificacao:id,nome,cor_destaque', 'restricao', 'salas', 'salas.tipoSala:id,nome', 'disciplinas', 'disciplinas.disciplina:id,nome'])->get());
+        return response()->json($this->service->find(with:['classificacao:id,nome,cor_destaque', 'restricao', 'salas', 'salas.tipoSala:id,nome', 'disciplinas', 'disciplinas.disciplina:id,name'])->get());
     }
 
 

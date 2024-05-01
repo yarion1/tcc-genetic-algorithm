@@ -4,6 +4,7 @@ namespace App\Models\ModelFront;
 
 use App\Models\ModelFront\Base\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Course;
 
 class RestricaoGrupoDisciplina extends BaseModel
 {

@@ -11,26 +11,13 @@ use App\Models\Professor;
 
 class CoursesController extends Controller
 {
-    /**
-     * Service class for handling operations relating to this
-     * controller
-     *
-     * @var App\Services\CoursesService $service
-     */
     protected $service;
 
     public function __construct(CoursesService $service)
     {
-//        $this->middleware('auth');
-//        $this->middleware('activated');
         $this->service = $service;
     }
 
-    /**
-     * Get a listing of courses
-     *
-     * @param Illuminate\Http\Request $request The HTTP request
-     */
     public function index(Request $request)
     {
         $courses = $this->service->all([
@@ -50,11 +37,6 @@ class CoursesController extends Controller
         return view('courses.index', compact('courses', 'professors'));
     }
 
-    /**
-     * Add a new course
-     *
-     * @param Illuminate\Http\Request $request The HTTP request
-     */
     public function store(Request $request)
     {
         $rules = [
@@ -77,12 +59,7 @@ class CoursesController extends Controller
         }
     }
 
-    /**
-     * Get a room by id
-     *
-     * @param int id The id of the room
-     * @param Illuminate\Http\Request $request HTTP request
-     */
+ 
     public function show($id, Request $request)
     {
         $course = $this->service->show($id);
@@ -93,13 +70,7 @@ class CoursesController extends Controller
             return response()->json(['error' => 'Course not found'], 404);
         }
     }
-
-    /**
-     * Update room with given ID
-     *
-     * @param int id The id of the room to be updated
-     * @param Illuminate\Http\Request The HTTP request
-     */
+ 
     public function update($id, Request $request)
     {
         $rules = [

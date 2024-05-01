@@ -20,6 +20,7 @@ class DisciplinaRequest extends FormRequest
             'tipo_sala_id' => 'nullable|numeric',
             'periodo' => 'nullable|numeric',
             'carga_horaria' => 'nullable|numeric',
+            'quantidade_alunos' => 'nullable|numeric',
         ];
     }
 }
