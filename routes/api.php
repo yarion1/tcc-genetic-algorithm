@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CollegeClassesController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Disciplina\DisciplinaController;
 use App\Http\Controllers\Horario\BusinessHoursController;
@@ -85,6 +86,12 @@ Route::middleware('jwt.auth')->group(function () {
             Route::get('/{id}', 'show')->whereNumber('id');
             Route::put('/{id}', 'update')->whereNumber('id');
             Route::delete('/{id}', 'destroy')->whereNumber('id');
+        });
+    });
+
+    Route::prefix('periodos')->group(function () {
+        Route::controller(CollegeClassesController::class)->group(function () {
+            Route::get('/', 'indexPeriodos');
         });
     });
 

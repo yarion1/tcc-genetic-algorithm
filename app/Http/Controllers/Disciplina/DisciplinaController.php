@@ -19,7 +19,7 @@ class DisciplinaController extends Controller
 
     public function index()
     {
-        return response()->json($this->service->find()->get());
+        return response()->json($this->service->find(with: ['collegeClass:id,name,period'])->get());
     }
 
     public function store(DisciplinaRequest $request)
@@ -41,7 +41,8 @@ class DisciplinaController extends Controller
     public function update(DisciplinaRequest $request, int $id)
     {
         $validated = $request->validated();
-        $result = $this->service->advancedUpdate($id, $validated);
+        $result = $this->service->advancedUpdate($id, $validated, ['collegeClass']);
+        $result->load('collegeClass:id,name,period');
         return response()->json(['message' => 'Diciplina Atualizada.', 'result' => $result]);
     }
 

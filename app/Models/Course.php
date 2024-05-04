@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use DB;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class Course extends Model
 {
     /**
@@ -63,5 +65,10 @@ class Course extends Model
     public function scopeHavingNoProfessors($query)
     {
         return $query->has('professors', '<', 1);
+    }
+
+    public function collegeClass(): BelongsTo
+    {
+         return $this->BelongsTo(CollegeClass::class, 'college_class_id');
     }
 }

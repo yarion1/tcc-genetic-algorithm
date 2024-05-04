@@ -56,6 +56,12 @@ class CollegeClassesController extends Controller
         return view('classes.index', compact('classes', 'rooms', 'courses', 'academicPeriods'));
     }
 
+    public function indexPeriodos()
+    {
+        return response()->json($this->service->all());
+    }
+
+
     /**
      * Add a new class to the database
      *

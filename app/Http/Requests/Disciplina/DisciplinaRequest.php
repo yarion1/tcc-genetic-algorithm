@@ -18,7 +18,7 @@ class DisciplinaRequest extends FormRequest
             'name' => 'required|string',
             'course_code' => 'required|string',
             'tipo_sala_id' => 'nullable|numeric',
-            'periodo' => 'nullable|numeric',
+            'college_class_id' => 'required|numeric',
             'carga_horaria' => 'nullable|numeric',
             'quantidade_alunos' => 'nullable|numeric',
         ];
