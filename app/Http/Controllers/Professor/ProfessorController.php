@@ -18,7 +18,7 @@ class ProfessorController extends Controller
 
     public function index()
     {
-        return response()->json($this->service->find(with: ['pessoa:id,nome'])->get());
+        return response()->json($this->service->find(with: ['pessoa:id,nome', 'courses:id,name,course_code'])->get());
     }
 
 
