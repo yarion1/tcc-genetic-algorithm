@@ -64,8 +64,8 @@ class ProfessorService extends BaseService
     protected function beforeUpdate(array $inputData, int $id): array
     {
         // CoursesProfessor::where('professor_id', $id)->delete();
-        PrioridadesProfessores::where('professor_id', $id)->delete();
-        DisponibilidadesProfessores::where('professor_id', $id)->delete();
+        // PrioridadesProfessores::where('professor_id', $id)->delete();
+        // DisponibilidadesProfessores::where('professor_id', $id)->delete();
 
         foreach ($inputData['courses'] as $disciplinaId) {
             CoursesProfessor::updateOrCreate(

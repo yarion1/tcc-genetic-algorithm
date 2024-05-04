@@ -17,7 +17,7 @@ class ProfessorRequest extends FormRequest
         return [
             'nome' => 'required|string',
             'apelido' => 'string|nullable',
-            'disciplinas' => 'required|array',
+            'courses' => 'required|array',
             'carga_horaria' => 'required|numeric',
             'cpf' => 'required|string',
             // 'disponibilidades' => 'required|array',

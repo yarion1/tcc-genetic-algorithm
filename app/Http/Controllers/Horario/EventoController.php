@@ -41,11 +41,11 @@ class EventoController extends Controller
         $validated = $request->all();
         $result = $this->service->update($id, $validated);
 
-        if(!isset($validated['drop'])) {
-            $result->load(['room', 'day']);
+        // if(!isset($validated['drop'])) {
+            $result->load(['room', 'day', 'course', 'college_class']);
             $result->daysOfWeek = [$result->day->daysOfWeek];
             $result = [...$result->toArray(), 'periodo' => $validated['periodo']];
-        }
+        // }
         
         return response()->json(['message' => 'Registro Atualizado.', 'result' => $result]);
     }

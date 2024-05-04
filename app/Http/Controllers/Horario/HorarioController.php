@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Horario;
 
+use App;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Horario\HorarioRequest;
 use App\Services\Horario\HorarioService;
@@ -48,5 +49,11 @@ class HorarioController extends Controller
     {
         $this->service->delete($id);
         return response()->json(['message' => 'Registro Excluído.']);
+    }
+
+    public function imprimir(int $id)
+    {
+        $result = $this->service->imprimirHorario($id);
+        return $result;
     }
 }
