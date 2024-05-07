@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CollegeClassesController;
+use App\Http\Controllers\Configuracao\MenuController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Disciplina\DisciplinaController;
 use App\Http\Controllers\Horario\BusinessHoursController;
@@ -50,13 +51,16 @@ Route::middleware('jwt.auth')->group(function () {
         });
     });
 
-    Route::prefix('turma')->group(function () {
-        Route::controller(TurmaController::class)->group(function () {
-            Route::get('/', 'index');
-            Route::post('/', 'store');
-            Route::get('/{id}', 'show')->whereNumber('id');
-            Route::put('/{id}', 'update')->whereNumber('id');
-            Route::delete('/{id}', 'destroy')->whereNumber('id');
+    Route::prefix('configuracao')->group(function () {
+        Route::prefix('menu')->group(function () {
+            Route::controller(MenuController::class)->group(function () {
+                Route::get('/', 'index');
+            });
+            // Route::prefix('menu')->group(function () {
+            //     Route::controller(MenuController::class)->group(function () {
+            //         Route::get('/', 'index');
+            //     });
+            // });
         });
     });
 

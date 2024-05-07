@@ -35,7 +35,7 @@ class PessoaController extends Controller
         $token = Auth::attempt($credentials);
 
         if ($token) {
-            return response()->json(['message' => 'Usuário Autenticado com Sucesso.', 'token' => $token, 'usuario' => auth()->user()->only(['id', 'nome', 'email', 'foto'])]);
+            return response()->json(['message' => 'Usuário Autenticado com Sucesso.', 'token' => $token, 'usuario' => auth()->user()->only(['id', 'nome', 'email', 'foto', 'apelido', 'perfil_id'])]);
         } else {
             return response()->json(['message' => 'Credenciais Inválidas.'], 401);
         }
@@ -60,7 +60,7 @@ class PessoaController extends Controller
         $token = Auth::attempt($credentials);
         
         if ($token) {
-            return response()->json(['message' => 'Pessoa Cadastrada e Autenticada com Sucesso.', 'token' => $token, 'usuario' => auth()->user()->only(['id', 'nome', 'email', 'foto'])]);
+            return response()->json(['message' => 'Pessoa Cadastrada e Autenticada com Sucesso.', 'token' => $token, 'usuario' => auth()->user()->only(['id', 'nome', 'email', 'foto', 'apelido', 'perfil_id'])]);
         } else {
             return response()->json(['message' => 'Credenciais Inválidas.'], 401);
         }

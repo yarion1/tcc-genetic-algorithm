@@ -44,41 +44,50 @@ class HorarioService extends BaseService
         }
 
         $groupedEvents = [];
+        $newArray = [];
 
+        $newArray = array();
+        $groupedEvents = array();
+        
         foreach ($dados['horario'] as $horario) {
             $period = $horario['college_class']['period'];
-            $startTime = $horario['startTime'];
-            $endTime = $horario['endTime'];
             $daysOfWeek = $horario['day']['daysOfWeek'];
+            unset($horario['day']);
         
-            // Verificar se já existe um array com o mesmo intervalo de tempo e daysOfWeek
-            $found = false;
-            foreach ($groupedEvents as &$group) {
-                if ($group['startTime'] === $startTime &&
-                    $group['endTime'] === $endTime &&
-                    in_array($daysOfWeek, $group['daysOfWeek'])) {
-                    // Adicionar o evento ao array existente
-                    $group['events'][] = $horario;
-                    $found = true;
+            // Verifica se o grupo de eventos para este dia já existe
+            if (!isset($groupedEvents[$daysOfWeek])) {
+                // Se não existir, cria um novo grupo de eventos
+                $groupedEvents[$daysOfWeek] = array(
+                    'daysOfWeek' => $daysOfWeek,
+                    'events' => array()
+                );
+            }
+        
+            // Adiciona o evento ao grupo de eventos correspondente ao dia da semana
+            $groupedEvents[$daysOfWeek]['events'][] = $horario;
+        
+            // Verifica se todos os grupos de eventos já foram preenchidos
+            $allHaveEventId = true;
+            foreach ($groupedEvents as $event) {
+                if (empty($event['events'])) {
+                    $allHaveEventId = false;
                     break;
                 }
             }
         
-            // Se não encontrou um array existente, criar um novo
-            if (!$found) {
-                $groupedEvents[] = [
-                    'period' => $period,
-                    'startTime' => $startTime,
-                    'endTime' => $endTime,
-                    'daysOfWeek' => [$daysOfWeek],
-                    'events' => [$horario],
-                ];
+            // Se todos os grupos de eventos estiverem preenchidos, adiciona ao newArray
+            if ($allHaveEventId) {
+                $newArray[] = $groupedEvents;
+                $groupedEvents = array(); // Limpa o array para iniciar um novo conjunto
             }
         }
         
+        ddFront($newArray);
+        
+
 
         $dados['horario'] = $events;
-        ddFront($groupedEvents);
+        ddFront($events);
         $pdf = App::make('dompdf.wrapper');
         return $pdf->loadView('templateHorario.horario', ['dados' => $dados],)->stream('horario.pdf');
     }

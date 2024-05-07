@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Horario\HorarioRequest;
 use App\Services\Horario\HorarioService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HorarioController extends Controller
 {
@@ -47,8 +48,11 @@ class HorarioController extends Controller
 
     public function destroy(int $id)
     {
-        $this->service->delete($id);
-        return response()->json(['message' => 'Registro Excluído.']);
+        $coordernador = !Auth::user()->perfil_id ?? 1;
+        if($coordernador) {
+            $this->service->delete($id);
+            return response()->json(['message' => 'Registro Excluído.']);
+        }
     }
 
     public function imprimir(int $id)

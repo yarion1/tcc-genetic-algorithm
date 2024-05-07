@@ -76,56 +76,44 @@
                     <td class="tg-0pky">Quinta</td>
                     <td class="tg-0pky">Sexta</td>
                 </tr>
-                @php
-                    $eventsByTimeAndDay = []; // Array para armazenar os eventos por tempo e dia
-                @endphp
 
-                @foreach ($horario['events'] as $evento)
-                    @php
-                        // Criar uma chave única para representar o tempo e o dia do evento
-                        $key = $evento['startTime'] . '-' . $evento['endTime'] . '-' . $evento['daysOfWeek'];
-                        // Adicionar o evento ao array agrupado por tempo e dia
-                        $eventsByTimeAndDay[$key][] = $evento;
-                    @endphp
-                @endforeach
-
-                @foreach ($eventsByTimeAndDay as $events)
-                    @for ($i = 0; $i < count($events); $i++)
-                        <tr>
-                            @if ($i === 0)
-                                <td class="tg-0pky" rowspan="{{ count($events) * 3 }}"
-                                    style="background-color: #FCE198;">
-                                    08:00 - 11:40
-                                </td>
-                            @endif
-                            @for ($day = 1; $day <= 5; $day++)
-                                <td class="tg-0pky tdAula">
-                                    @if ($events[$i]['daysOfWeek'] == $day && $events[$i]['startTime'] >= '08:00:00' && $events[$i]['endTime'] <= '11:40:00')
-                                        <div>{{ $events[$i]['title'] }}</div>
-                                    @endif
-                                </td>
-                            @endfor
-                        </tr>
-                        <tr>
-                            @for ($day = 1; $day <= 5; $day++)
-                                <td class="tg-0pky">
-                                    @if ($events[$i]['daysOfWeek'] == $day && $events[$i]['startTime'] >= '08:00:00' && $events[$i]['endTime'] <= '11:40:00')
-                                        <div> {{ $events[$i]['room']['name'] }}</div>
-                                    @endif
-                                </td>
-                            @endfor
-                        </tr>
-                        <tr>
-                            @for ($day = 1; $day <= 5; $day++)
-                                <td class="tg-0pky" style="background-color: #cfe2f2;">
-                                    @if ($events[$i]['daysOfWeek'] == $day && $events[$i]['startTime'] >= '08:00:00' && $events[$i]['endTime'] <= '11:40:00')
-                                        <div> {{ $events[$i]['professor']['pessoa']['apelido'] }}</div>
-                                    @endif
-                                </td>
-                            @endfor
-                        </tr>
+                <tr>
+                    <td class="tg-0pky" rowspan="3" style="background-color: #FCE198; width: 30px;">08:00-11:40
+                    </td>
+                    @for ($day = 1; $day <= 5; $day++)
+                        <td class="tg-0pky">
+                            @foreach ($horario['events'] as $events)
+                                @if ($events['daysOfWeek'] == $day && $events['startTime'] >= '08:00:00' && $events['endTime'] <= '11:40:00')
+                                    <div> {{ $events['title'] }}</div>
+                                @endif
+                            @endforeach
+                        </td>
                     @endfor
-                @endforeach
+                </tr>
+                <tr>
+                    @for ($day = 1; $day <= 5; $day++)
+                        <td class="tg-0pky">
+                            @foreach ($horario['events'] as $events)
+                                @if ($events['daysOfWeek'] == $day && $events['startTime'] >= '08:00:00' && $events['endTime'] <= '11:40:00')
+                                    <div> {{ $events['room']['name'] }}</div>
+                                @endif
+                            @endforeach
+                        </td>
+                    @endfor
+                </tr>
+
+                <tr>
+                    @for ($day = 1; $day <= 5; $day++)
+                        <td class="tg-0pky" style="background-color: #cfe2f2;">
+                            @foreach ($horario['events'] as $events)
+                                @if ($events['daysOfWeek'] == $day && $events['startTime'] >= '08:00:00' && $events['endTime'] <= '11:40:00')
+                                    <div> {{ $events['professor']['pessoa']['apelido'] }}</div>
+                                @endif
+                            @endforeach
+                        </td>
+                    @endfor
+                </tr>
+
 
                 <tr>
                     <td class="tg-0pky" rowspan="3" style="background-color: #FCE198; width: 30px;">14:00-17:40</td>
