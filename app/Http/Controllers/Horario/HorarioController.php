@@ -6,6 +6,7 @@ use App;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Horario\HorarioRequest;
 use App\Services\Horario\HorarioService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,6 +39,12 @@ class HorarioController extends Controller
         return response()->json($result);
     }
 
+    public function criarCopia(int $id)
+    {
+        $result = $this->service->criarCopia($id);
+        return response()->json(['message' => 'Registro Cadastrado.', 'result' => $result]);
+    }
+
     public function update(HorarioRequest $request, int $id)
     {
         $validated = $request->all();
@@ -48,7 +55,13 @@ class HorarioController extends Controller
 
     public function destroy(int $id)
     {
-        $coordernador = !Auth::user()->perfil_id ?? 1;
+        $coordernador = Auth::user()->perfil_id ?? 1;
+        $horario = $this->service->find()->findOrFail($id);
+
+        if(isset($horario['versao_atual']) && $horario['versao_atual']) {
+            throw new Exception("Não é possível excluir o horário, pois está habilitado como versão final.");
+        }
+        
         if($coordernador) {
             $this->service->delete($id);
             return response()->json(['message' => 'Registro Excluído.']);
@@ -59,5 +72,12 @@ class HorarioController extends Controller
     {
         $result = $this->service->imprimirHorario($id);
         return $result;
+    }
+
+    public function ativarVersao(Request $request, int $id)
+    {
+       $request = $request->all();
+       $result =  $this->service->ativarVersao($id, $request['versao_atual']);  
+       return $result;
     }
 }
