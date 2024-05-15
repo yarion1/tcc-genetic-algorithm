@@ -172,6 +172,7 @@ Route::middleware('jwt.auth')->group(function () {
                         Route::get('/{id}', 'show')->whereNumber('id');
                         Route::put('/{id}', 'update')->whereNumber('id');
                         Route::delete('/{id}', 'destroy')->whereNumber('id');
+                        Route::delete('/{id}', 'destroyGrupo')->whereNumber('id');
                         Route::put('/atualizar/{id}', 'acaoAtivacao')->whereNumber('id');
                         Route::get('/geral', 'geral');
                     });

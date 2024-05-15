@@ -38,16 +38,14 @@ class RestricaoGrupoEventoController extends Controller
     public function geral()
     {
         $user = auth()->user();
-        if($user->perfil_id == 2) {
-            return response()->json($this->service->find(orderBy:['id', 'desc'], with:['classificacao:id,nome', 'restricao'])->get());
-        } 
-        return response()->json($this->service->find(orderBy:['id', 'desc'], with:['classificacao:id,nome', 'restricao'])->withoutGlobalScope(ActiveScope::class)->get());
+        $result = $this->service->getRestricoes($user);
+        return response()->json($result);
     }
 
     public function acaoAtivacao(Request $request, int $id)
     {
        $request = $request->all();
-       $result =  $this->service->acaoAtivacao($id, $request['ativo']);  
+       $result =  $this->service->acaoAtivacao($id, $request['ativo'], $request['grupo']);  
        return $result;
     }
 
@@ -58,6 +56,12 @@ class RestricaoGrupoEventoController extends Controller
         return response()->json(['message' => 'Registro Atualizado.', 'result' => $result]);
     }
 
+
+    public function destroyGrupo(int $id)
+    {
+        $ids = $this->service->excluirRestricoesGrupos($id);
+        return response()->json(['message' => 'Registro Excluído.', 'ids' => $ids]);
+    }
 
     public function destroy(int $id)
     {

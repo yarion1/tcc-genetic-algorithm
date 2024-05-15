@@ -21,14 +21,48 @@ class RestricaoGrupoEventoService extends BaseService
         return $updatedData;
     }
 
-    public function acaoAtivacao(int $id, bool $ativo)
+    public function getRestricoes(mixed $user)
     {
-        $result = $this->repository->find(with: ['classificacao:id,nome', 'restricao'])->withoutGlobalScope(ActiveScope::class)->findOrFail($id);
 
-        $result->ativo = $ativo;
-        $result->save();
+        if ($user->perfil_id == 2) {
+            return $this->repository->find(orderBy: ['id', 'desc'], with: ['classificacao:id,nome', 'restricao'])->get();
+        }
 
-        $message = $ativo ? 'Restrição Habilitada' : 'Restrição Desabilitada';
+        $restricoes = $this->repository->find(orderBy: ['id', 'desc'], with: ['classificacao:id,nome', 'restricao'])->withoutGlobalScope(ActiveScope::class)->get();
+
+        return $restricoes;
+    }
+
+    public function excluirRestricoesGrupos(int $id)
+    {
+        $ids = $this->repository->getModel()->where('tipo_restricao_id', $id)->pluck('id');
+        $this->repository->getModel()->where('tipo_restricao_id', $id)->delete();
+
+        return $ids;
+    }
+
+    public function acaoAtivacao(int $id, bool $ativo, bool $grupo)
+    {
+        $result = [];
+        if($grupo) {
+            $result = $this->repository->find(with: ['classificacao:id,nome', 'restricao'])->withoutGlobalScope(ActiveScope::class)->where('tipo_restricao_id', $id)->get();
+
+            foreach ($result as $key => $restricao) {
+                $restricao->ativo = $ativo;
+                $restricao->save();
+            }
+            
+        } else {
+            $result = $this->repository->find(with: ['classificacao:id,nome', 'restricao'])->withoutGlobalScope(ActiveScope::class)->findOrFail($id);
+            $result->ativo = $ativo;
+            $result->save();
+        }
+
+        if($grupo) {
+            $message = $ativo && $grupo ? 'Grupo de Restrições Habilitado' :  'Grupo de Restrições Desabilitado';
+        } else {
+            $message = $ativo ? 'Restrição Habilitada' : 'Restrição Desabilitada';
+        }
         return response()->json(['message' => $message, 'result' => $result]);
     }
 }

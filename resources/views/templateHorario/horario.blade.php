@@ -13,8 +13,9 @@
     }
 
     .page-break {
-        page-break-before: always;
+        page-break-after: always;
     }
+
 
     .tg td {
         border: 1px solid #CCCCCC;
@@ -49,10 +50,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Horário</title>
 </head>
+@php
+    function mesmoDia($events, $horaInicial, $horaFinal)
+    {
+        $day = date('Y-m-d');
+        $start = strtotime($day . ' ' . $events['startTime']);
+        $start8 = strtotime($day . ' ' . $horaInicial);
+        $end = strtotime($day . ' ' . $events['endTime']);
+        $end8 = strtotime($day . ' ' . $horaFinal);
+
+        return $start >= $start8 && $end <= $end8;
+    }
+@endphp
 
 <body>
-    @foreach ($dados['horario'] as $index => $horario)
-        <table class="tg{{ $index != 0 ? ' page-break' : '' }}">
+    @foreach ($dados as $index => $horario)
+        <table class="tg{{ $loop->last ? '' : ' page-break' }}">
             <thead>
                 <tr>
                     <th class="tg-0pky" colspan="6" style="background-color: #0D5579; color: white; font-weight: bold;">
@@ -76,92 +89,275 @@
                     <td class="tg-0pky">Quinta</td>
                     <td class="tg-0pky">Sexta</td>
                 </tr>
-
                 <tr>
-                    <td class="tg-0pky" rowspan="3" style="background-color: #FCE198; width: 30px;">08:00-11:40
+
+                    <td class="tg-0pky" rowspan="3" style="background-color: #FCE198; width: 30px;">
+                        08:00:00 - 11:40:00
                     </td>
                     @for ($day = 1; $day <= 5; $day++)
-                        <td class="tg-0pky">
-                            @foreach ($horario['events'] as $events)
-                                @if ($events['daysOfWeek'] == $day && $events['startTime'] >= '08:00:00' && $events['endTime'] <= '11:40:00')
-                                    <div> {{ $events['title'] }}</div>
-                                @endif
-                            @endforeach
+                        <td class="tg-0pky" style="margin: 0; padding: 0;">
+                            <table style="border:none; border-collapse: collapse; border-spacing: 0; width: 100%">
+                                <tr>
+                                    @php
+                                        $eventsOfDay = array_filter($horario['events'], function ($event) use ($day) {
+                                            return $event['daysOfWeek'] == $day &&
+                                                mesmoDia($event, '08:00:00', '11:40:00');
+                                        });
+                                    @endphp
+                                    @foreach ($eventsOfDay as $key => $event)
+                                        <td
+                                            style="border: none; max-width: 60px; vertical-align: middle;  text-align: center;">
+                                            {{ $event['title'] }}</td>
+                                             <td
+                                                style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
+                                            </td>
+                                       
+                                    @endforeach
+                                </tr>
+                            </table>
                         </td>
                     @endfor
                 </tr>
+
+
+
+
                 <tr>
+
                     @for ($day = 1; $day <= 5; $day++)
-                        <td class="tg-0pky">
-                            @foreach ($horario['events'] as $events)
-                                @if ($events['daysOfWeek'] == $day && $events['startTime'] >= '08:00:00' && $events['endTime'] <= '11:40:00')
-                                    <div> {{ $events['room']['name'] }}</div>
-                                @endif
-                            @endforeach
+                        <td class="tg-0pky" style="margin: 0; padding: 0;">
+                            <table style="border:none; border-collapse: collapse; border-spacing: 0; width: 100%">
+                                <tr>
+                                    @php
+                                        $eventsOfDay = array_filter($horario['events'], function ($event) use ($day) {
+                                            return $event['daysOfWeek'] == $day &&
+                                                mesmoDia($event, '08:00:00', '11:40:00');
+                                        });
+                                    @endphp
+                                    @foreach ($eventsOfDay as $key => $event)
+                                        <td
+                                            style="border: none; max-width: 60px; vertical-align: middle;  text-align: center;">
+                                            {{ $event['room']['name'] }}</td>
+                                        @if ($key < count($eventsOfDay) - 1)
+                                            <td
+                                                style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                </tr>
+                            </table>
                         </td>
                     @endfor
                 </tr>
 
                 <tr>
+
                     @for ($day = 1; $day <= 5; $day++)
-                        <td class="tg-0pky" style="background-color: #cfe2f2;">
-                            @foreach ($horario['events'] as $events)
-                                @if ($events['daysOfWeek'] == $day && $events['startTime'] >= '08:00:00' && $events['endTime'] <= '11:40:00')
-                                    <div> {{ $events['professor']['pessoa']['apelido'] }}</div>
-                                @endif
-                            @endforeach
+                        <td class="tg-0pky" style="margin: 0; padding: 0; background-color: #cfe2f2;">
+                            <table style="border:none; border-collapse: collapse; border-spacing: 0; width: 100%">
+                                <tr>
+                                    @php
+                                        $eventsOfDay = array_filter($horario['events'], function ($event) use ($day) {
+                                            return $event['daysOfWeek'] == $day &&
+                                                mesmoDia($event, '08:00:00', '11:40:00');
+                                        });
+                                    @endphp
+                                    @foreach ($eventsOfDay as $key => $event)
+                                        <td
+                                            style="border: none; max-width: 60px; vertical-align: middle;  text-align: center;">
+                                            {{ $event['professor']['pessoa']['apelido'] }}</td>
+                                        @if ($key < count($eventsOfDay) - 1)
+                                            <td
+                                                style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                </tr>
+                            </table>
+                        </td>
+                    @endfor
+                </tr>
+
+                <tr>
+                    <td class="tg-0pky" rowspan="3" style="background-color: #FCE198; width: 30px;">
+                        14:00:00 - 17:40:00
+                    </td>
+
+                    @for ($day = 1; $day <= 5; $day++)
+                        <td class="tg-0pky" style="margin: 0; padding: 0;">
+                            <table style="border:none; border-collapse: collapse; border-spacing: 0; width: 100%">
+                                <tr>
+                                    @php
+                                        $eventsOfDay = array_filter($horario['events'], function ($event) use ($day) {
+                                            return $event['daysOfWeek'] == $day &&
+                                                mesmoDia($event, '14:00:00', '17:40:00');
+                                        });
+                                    @endphp
+                                    @foreach ($eventsOfDay as $key => $event)
+                                        <td
+                                            style="border: none; max-width: 60px; vertical-align: middle;  text-align: center;">
+                                            {{ $event['title'] }}</td>
+                                        @if ($key < count($eventsOfDay) - 1)
+                                            <td
+                                                style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                </tr>
+                            </table>
+                        </td>
+                    @endfor
+                </tr>
+
+                <tr>
+
+                    @for ($day = 1; $day <= 5; $day++)
+                        <td class="tg-0pky" style="margin: 0; padding: 0;">
+                            <table style="border:none; border-collapse: collapse; border-spacing: 0; width: 100%">
+                                <tr>
+                                    @php
+                                        $eventsOfDay = array_filter($horario['events'], function ($event) use ($day) {
+                                            return $event['daysOfWeek'] == $day &&
+                                                mesmoDia($event, '14:00:00', '17:40:00');
+                                        });
+                                    @endphp
+                                    @foreach ($eventsOfDay as $key => $event)
+                                        <td
+                                            style="border: none; max-width: 60px; vertical-align: middle;  text-align: center;">
+                                            {{ $event['room']['name'] }}</td>
+                                        @if ($key < count($eventsOfDay) - 1)
+                                            <td
+                                                style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                </tr>
+                            </table>
+                        </td>
+                    @endfor
+                </tr>
+
+                <tr>
+
+                    @for ($day = 1; $day <= 5; $day++)
+                        <td class="tg-0pky" style="margin: 0; padding: 0; background-color: #cfe2f2;">
+                            <table style="border:none; border-collapse: collapse; border-spacing: 0; width: 100%">
+                                <tr>
+                                    @php
+                                        $eventsOfDay = array_filter($horario['events'], function ($event) use ($day) {
+                                            return $event['daysOfWeek'] == $day &&
+                                                mesmoDia($event, '14:00:00', '17:40:00');
+                                        });
+                                    @endphp
+                                    @foreach ($eventsOfDay as $key => $event)
+                                        <td
+                                            style="border: none; max-width: 60px; vertical-align: middle;  text-align: center;">
+                                            {{ $event['professor']['pessoa']['apelido'] }}</td>
+                                        @if ($key < count($eventsOfDay) - 1)
+                                            <td
+                                                style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                </tr>
+                            </table>
                         </td>
                     @endfor
                 </tr>
 
 
                 <tr>
-                    <td class="tg-0pky" rowspan="3" style="background-color: #FCE198; width: 30px;">14:00-17:40</td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
+
+                    <td class="tg-0pky" rowspan="3" style="background-color: #FCE198; width: 30px;">
+                        19:00:00 - 22:40:00
+                    </td>
+                    @for ($day = 1; $day <= 5; $day++)
+                        <td class="tg-0pky" style="margin: 0; padding: 0;">
+                            <table style="border:none; border-collapse: collapse; border-spacing: 0; width: 100%">
+                                <tr>
+                                    @php
+                                        $eventsOfDay = array_filter($horario['events'], function ($event) use ($day) {
+                                            return $event['daysOfWeek'] == $day &&
+                                                mesmoDia($event, '19:00:00', '22:40:00');
+                                        });
+                                    @endphp
+                                    @foreach ($eventsOfDay as $key => $event)
+                                        <td
+                                            style="border: none; max-width: 60px; vertical-align: middle;  text-align: center;">
+                                            {{ $event['title'] }}</td>
+                                        @if ($key < count($eventsOfDay) - 1)
+                                            <td
+                                                style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                </tr>
+                            </table>
+                        </td>
+                    @endfor
                 </tr>
+
                 <tr>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
+
+                    @for ($day = 1; $day <= 5; $day++)
+                        <td class="tg-0pky" style="margin: 0; padding: 0;">
+                            <table style="border:none; border-collapse: collapse; border-spacing: 0; width: 100%">
+                                <tr>
+                                    @php
+                                        $eventsOfDay = array_filter($horario['events'], function ($event) use ($day) {
+                                            return $event['daysOfWeek'] == $day &&
+                                                mesmoDia($event, '19:00:00', '22:40:00');
+                                        });
+                                    @endphp
+                                    @foreach ($eventsOfDay as $key => $event)
+                                        <td
+                                            style="border: none; max-width: 60px; vertical-align: middle;  text-align: center;">
+                                            {{ $event['room']['name'] }}</td>
+                                        @if ($key < count($eventsOfDay) - 1)
+                                            <td
+                                                style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                </tr>
+                            </table>
+                        </td>
+                    @endfor
                 </tr>
+
                 <tr>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
+
+                    @for ($day = 1; $day <= 5; $day++)
+                        <td class="tg-0pky" style="margin: 0; padding: 0; background-color: #cfe2f2;">
+                            <table style="border:none; border-collapse: collapse; border-spacing: 0; width: 100%">
+                                <tr>
+                                    @php
+                                        $eventsOfDay = array_filter($horario['events'], function ($event) use ($day) {
+                                            return $event['daysOfWeek'] == $day &&
+                                                mesmoDia($event, '19:00:00', '22:40:00');
+                                        });
+                                    @endphp
+                                    @foreach ($eventsOfDay as $key => $event)
+                                        <td
+                                            style="border: none; max-width: 60px; vertical-align: middle;  text-align: center;">
+                                            {{ $event['professor']['pessoa']['apelido'] }}</td>
+                                        @if ($key < count($eventsOfDay) - 1)
+                                            <td
+                                                style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                </tr>
+                            </table>
+                        </td>
+                    @endfor
                 </tr>
-                <tr>
-                    <td class="tg-0pky" rowspan="3" style="background-color: #FCE198;">19:00-22:40</td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                </tr>
-                <tr>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                </tr>
-                <tr>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                    <td class="tg-0pky"></td>
-                </tr>
+
+
+
             </tbody>
         </table>
-        {{-- <div class="page-break"></div> --}}
+
     @endforeach
 
 </body>
