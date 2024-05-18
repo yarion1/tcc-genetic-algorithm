@@ -43,7 +43,7 @@ class EventoController extends Controller
 
         // if(!isset($validated['drop'])) {
         $result->load([
-            'room', 'day', 'course', 'college_class', 'professor:id,pessoa_id',
+            'room', 'day', 'course', 'college_class', 'professor:id,pessoa_id,carga_horaria',
             'professor.pessoa:id,nome,apelido'
         ]);
         $result->daysOfWeek = [$result->day->daysOfWeek];

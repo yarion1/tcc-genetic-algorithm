@@ -54,14 +54,14 @@ class HorarioService extends BaseService
             $events[$period]['daysOfWeek'] = $horario['daysOfWeek'];
         }
 
-        
+
         $dados['horario'] = $events;
         // ddFront($dados['horario']);
-     
+
         $pdf = App::make('dompdf.wrapper');
         return $pdf->loadView('templateHorario.horario', ['dados' => $dados['horario']],)->setPaper('A4', 'landscape')->stream('horario.pdf');
     }
-    
+
     public function criarHorario(array $dados)
     {
 
@@ -121,12 +121,11 @@ class HorarioService extends BaseService
     {
         $result = $this->find(with: [
             'horario',
-            // 'college_class',
             'horario.college_class',
             'horario.room',
             'horario.room.tipoSala',
             'horario.course',
-            'horario.professor:id,pessoa_id',
+            'horario.professor:id,pessoa_id,carga_horaria',
             'horario.professor.pessoa:id,nome,apelido',
             'horario.day',
         ])->findOrFail($id);
