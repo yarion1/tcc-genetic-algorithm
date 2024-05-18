@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Sala;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Sala\SalaRequest;
 use App\Services\Sala\SalaService;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,7 @@ class SalaController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(SalaRequest $request)
     {
         $validated = $request->all();
         $result = $this->service->create($validated);

@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->string('tipo_sala');
+            $table->foreignId('tipo_sala_id')->constrained('tipos_salas');
+            $table->string('nome_abreviado');
         });
     }
 
@@ -22,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('rooms', function (Blueprint $table) {
-            $table->dropColumn('tipo_sala');
+            $table->dropColumn('tipo_sala_id');
+            $table->dropColumn('nome_abreviado');
         });
     }
 };

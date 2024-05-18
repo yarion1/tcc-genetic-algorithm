@@ -15,9 +15,10 @@ class SalaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nome' => 'required|string',
+            'name' => 'required|string',
             'tipo_sala_id' => 'required|numeric',
-            'capacidade' => 'required|numeric',
+            'nome_abreviado' => 'nullable|string',
+            'capacity' => 'required|numeric',
         ];
     }
 }
