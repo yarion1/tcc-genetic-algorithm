@@ -38,8 +38,9 @@ class SalaController extends Controller
     public function update(Request $request, int $id)
     {
         $validated = $request->all();
-        $this->service->advancedUpdate($id, $validated);
-        return response()->json(['message' => 'Registro Atualizado.']);
+        $result = $this->service->advancedUpdate($id, $validated, ['tipoSala']);
+        $result->load('tipoSala:id,nome');
+        return response()->json(['message' => 'Registro Atualizado.', 'result' => $result]);
     }
 
 
