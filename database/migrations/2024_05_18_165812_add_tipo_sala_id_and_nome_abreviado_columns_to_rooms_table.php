@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('rooms', function (Blueprint $table) {
             $table->foreignId('tipo_sala_id')->nullable()->constrained('tipos_salas');
-            $table->string('nome_abreviado');
+            $table->string('nome_abreviado')->nullable();
         });
     }
 
