@@ -1,6 +1,8 @@
 <?php
 namespace App\Services\GeneticAlgorithm;
 
+use App\Models\Course;
+
 class CollegeClass
 {
     /**
@@ -157,5 +159,23 @@ class CollegeClass
     public function getRoomId()
     {
         return $this->roomId;
+    }
+
+    public function getTitle()
+    {
+        $course = Course::find($this->moduleId);
+        return $course->name;
+    }
+
+    public function getPeriod()
+    {
+        $period = \App\Models\CollegeClass::find($this->groupId);
+        return $period->period;
+    }
+
+    public function getSize()
+    {
+        $course = Course::find($this->moduleId);
+        return $course->quantidade_alunos;
     }
 }

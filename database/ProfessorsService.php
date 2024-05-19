@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace database;
 
 use App\Models\Professor;
+use App\Services\AbstractService;
 
 class ProfessorsService extends AbstractService
 {

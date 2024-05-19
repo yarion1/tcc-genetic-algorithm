@@ -155,13 +155,18 @@ class TimetableGA
     public function run()
     {
         try {
+
+            Individual::$partialApplied = false;
+
             $maxGenerations = 1500;
 
             $timetable = $this->initializeTimetable();
 
             $algorithm = new GeneticAlgorithm(100, 0.01, 0.9, 2, 10);
 
-            $population = $algorithm->initPopulation($timetable);
+            $horario_id = $this->timetable->horario_id;
+
+            $population = $algorithm->initPopulation($timetable, $horario_id);
 
             $algorithm->evaluatePopulation($population, $timetable);
             // Keep track of current generation
@@ -206,8 +211,8 @@ class TimetableGA
                 'scheme' => $scheme,
                 'status' => 'COMPLETED'
             ]);
+            $horario_id = $this->timetable->horario_id;
 
-            // Save scheduled classes' information for professors
             foreach ($classes as $class) {
                 $groupId = $class->getGroupId();
                 $timeslot = $timetable->getTimeslot($class->getTimeslotId());
@@ -216,6 +221,9 @@ class TimetableGA
                 $professorId = $class->getProfessorId();
                 $moduleId = $class->getModuleId();
                 $roomId = $class->getRoomId();
+                $startTime = $timeslot->getStartTime();
+                $endTime = $timeslot->getEndTime();
+                $title = $class->getTitle();
 
                 $this->timetable->schedules()->create([
                     'day_id' => $dayId,
@@ -223,7 +231,11 @@ class TimetableGA
                     'professor_id' => $professorId,
                     'course_id' => $moduleId,
                     'class_id' => $groupId,
-                    'room_id' => $roomId
+                    'room_id' => $roomId,
+                    'horario_id' => $horario_id,
+                    'startTime' => $startTime,
+                    'endTime' => $endTime,
+                    'title' => "Aula de ".$title,
                 ]);
             }
             event(new TimetablesGenerated($this->timetable));

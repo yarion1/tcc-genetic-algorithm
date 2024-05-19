@@ -33,8 +33,9 @@ class DatabaseSeeder extends Seeder
             // TurmasTableSeeder::class,
             // TiposSalasTableSeeder::class,
             // DiaSemanaSeeder::class,
-            // TipoRestricaoSeeder::class,
+             //TipoRestricaoSeeder::class,
             // RestricaoSeed::class,
+            MenuSeeder::class
         ]);
         
     }

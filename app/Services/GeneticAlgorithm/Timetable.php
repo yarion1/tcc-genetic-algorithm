@@ -1,8 +1,10 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Services\GeneticAlgorithm;
 
 use App\Models\Day;
+use App\Models\ModelFront\RestricaoGrupoEvento;
+use Illuminate\Support\Facades\Cache;
 
 class Timetable
 {
@@ -187,7 +189,6 @@ class Timetable
 
         foreach ($this->groups as $id => $group) {
             $moduleIds = $group->getModuleIds();
-
             foreach ($moduleIds as $moduleId) {
                 $module = $this->getModule($moduleId);
 
@@ -399,31 +400,86 @@ class Timetable
      */
     public function calcClashes()
     {
+        $par = Cache::rememberForever('par_restrictions', function () {
+            return RestricaoGrupoEvento::query()
+                ->select(['classificacao_id', 'startTime', 'endTime', 'daysOfWeek', 'restricao_grupo_id'])
+                ->where(["ativo" => 1, "tipo_restricao_id" => 4])
+                ->get();
+        });
+
+        // Cache para 'impar_restrictions'
+        $impar = Cache::rememberForever('impar_restrictions', function () {
+            return RestricaoGrupoEvento::query()
+                ->select(['classificacao_id', 'startTime', 'endTime', 'daysOfWeek', 'restricao_grupo_id'])
+                ->where(["ativo" => 1, "tipo_restricao_id" => 5])
+                ->get();
+        });
+
+        $preference = "";
         $clashes = 0;
         $days = Day::all();
 
         foreach ($this->classes as $id => $classA) {
+
             $roomCapacity = $this->getRoom($classA->getRoomId())->getCapacity();
             $roomAvailable = $this->getRoom($classA->getRoomId())->getOccupiedSlots();
             $groupSize = $this->getGroup($classA->getGroupId())->getSize();
             $professor = $this->getProfessor($classA->getProfessorId());
             $timeslot = $this->getTimeslot($classA->getTimeslotId());
+            $startTime = $timeslot->getStartTime();
+            $endTime = $timeslot->getEndTime();
+            $dayId = $timeslot->getDaysOfWeek();
+            $period = $classA->getPeriod();
+            $courseSize = $classA->getSize();
             $module = $this->getModule($classA->getModuleId());
-            $groupImpar = $this->getGroup($classA->getGroupId())->getId() % 2 != 0;
             $timeslotId = $timeslot->getTimeslotId();
 
-            if ($roomCapacity < $groupSize) {
-                $clashes++;
+            $strRes = $period . $dayId . $startTime . $endTime;
+
+            if ($par->isNotEmpty()){
+                foreach ($par as $restriction){
+                    $aux = $restriction->restricao_grupo_id . $restriction->daysOfWeek . $restriction->startTime . $restriction->endTime;
+
+                    $classificacaoId = $restriction->classificacao_id;
+
+                    if ($classificacaoId == 1 && $aux == $strRes) {
+                        dd($aux, $strRes);
+                    }
+                    if ($classificacaoId == 2 && $aux == $strRes) {
+                        dd(2);
+                    }
+                    if ($classificacaoId == 3 && $aux == $strRes) {
+                        dd(3);
+                    }
+                }
             }
-//            dd($timeslot->getTimeslotId());
-////            dd($this->getGroup($classA->getGroupId())->getId());
-            if ($groupImpar && $timeslotId != 2){
+
+            if ($impar->isNotEmpty()){
+                foreach ($impar as $restriction){
+                    $aux = $restriction->restricao_grupo_id . $restriction->daysOfWeek . $restriction->startTime . $restriction->endTime;
+
+                    $classificacaoId = $restriction->classificacao_id;
+
+                    if ($classificacaoId == 1 && $aux == $strRes) {
+                        dd(1);
+                    }
+                    if ($classificacaoId == 2 && $aux == $strRes) {
+                        dd(2);
+                    }
+                    if ($classificacaoId == 3 && $aux == $strRes) {
+                        dd(3);
+                    }
+                }
+            }
+
+            if ($roomCapacity < $courseSize) {
                 $clashes++;
             }
 
-            if (!$groupImpar && $timeslotId != 1) {
-                $clashes++;
-            }
+//            if ($roomCapacity < $groupSize) {
+//                $clashes++;
+//            }
+
 
             // Check if we don't have any lecturer forced to teach at his occupied time
             if (in_array($timeslot->getId(), $professor->getOccupiedSlots())) {

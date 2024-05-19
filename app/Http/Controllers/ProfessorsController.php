@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Response;
-use Illuminate\Http\Request;
-use App\Services\ProfessorsService;
-
-use App\Models\Day;
 use App\Models\Course;
-use App\Models\Timeslot;
+use App\Models\Day;
 use App\Models\Professor;
-use App\Models\UnavailableTimeslot;
+use App\Models\Timeslot;
+use database\ProfessorsService;
+use Illuminate\Http\Request;
+use Response;
 
 class ProfessorsController extends Controller
 {

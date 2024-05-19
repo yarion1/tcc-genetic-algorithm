@@ -93,4 +93,19 @@ class Timeslot
     {
         return $this->timeslotModel->id;
     }
+
+    public function getStartTime()
+    {
+        return $this->timeslotModel->startTime;
+    }
+
+    public function getEndTime()
+    {
+        return $this->timeslotModel->endTime;
+    }
+
+    public function getDaysOfWeek()
+    {
+        return $this->dayModel->daysOfWeek;
+    }
 }

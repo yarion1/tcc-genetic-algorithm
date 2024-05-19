@@ -51,11 +51,13 @@ class TimetablesController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'academic_period_id' => 'required'
+            'academic_period_id' => 'required',
+            'horario_id' => 'required'
         ];
 
         $messages = [
-            'academic_period_id.required' => 'An academic period must be selected'
+            'academic_period_id.required' => 'An academic period must be selected',
+            'horario_id.required' => 'horario_id is required'
         ];
 
         $this->validate($request, $rules, $messages);
@@ -89,7 +91,8 @@ class TimetablesController extends Controller
             'user_id' => 1,
             'academic_period_id' => $request->academic_period_id,
             'status' => 'IN PROGRESS',
-            'name' => $request->name
+            'name' => $request->name,
+            'horario_id' => $request->horario_id
         ]);
 
         if ($timetable) {

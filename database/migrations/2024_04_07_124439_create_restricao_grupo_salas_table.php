@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('restricao_grupo_salas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('restricao_grupo_evento_id')->constrained('restricao_grupo_eventos');
-            $table->foreignId('sala_id')->constrained('rooms');
+            $table->unsignedBigInteger('restricao_grupo_evento_id')->constrained('restricao_grupo_eventos');
+            $table->unsignedBigInteger('sala_id')->constrained('rooms');
             
             $table->boolean('ativo')->default(true);
             $table->unsignedBigInteger('criado_por')->nullable();
