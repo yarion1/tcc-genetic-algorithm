@@ -11,8 +11,8 @@ class TipoRestricaoSeeder extends Seeder
     use WithoutModelEvents;
     private $restricao = [
         ['nome' => 'Alocação de salas de acordo com a capacidade máxima'],
-        ['nome' => 'Alocação dos Professores de acordo com sua preferência'],
-        ['nome' => 'Alocação dos Professores de acordo com sua disponibilidade'],
+        // ['nome' => 'Alocação dos Professores de acordo com sua preferência'],
+        // ['nome' => 'Alocação dos Professores de acordo com sua disponibilidade'],
         ['nome' => 'Períodos pares com aula pela manhã'],
         ['nome' => 'Períodos ímpares com aulas pela tarde'],
         ['nome' => 'Disciplinas a noite só exceções'],
