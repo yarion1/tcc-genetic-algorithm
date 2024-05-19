@@ -31,7 +31,7 @@ class HorarioService extends BaseService
             'horario.room.tipoSala',
             'horario.course',
             'horario.day',
-            'horario.professor:id,pessoa_id',
+            'horario.professor:id,pessoa_id,substitute',
             'horario.professor.pessoa:id,nome,apelido'
         ])->findOrFail($id);
 
@@ -125,7 +125,7 @@ class HorarioService extends BaseService
             'horario.room',
             'horario.room.tipoSala',
             'horario.course',
-            'horario.professor:id,pessoa_id,carga_horaria',
+            'horario.professor:id,pessoa_id,carga_horaria,substitute',
             'horario.professor.pessoa:id,nome,apelido',
             'horario.day',
         ])->findOrFail($id);

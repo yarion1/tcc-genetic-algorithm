@@ -20,6 +20,7 @@ class ProfessorRequest extends FormRequest
             'courses' => 'required|array',
             'carga_horaria' => 'required|numeric',
             'cpf' => 'required|string',
+            'substitute' => 'boolean',
             // 'disponibilidades' => 'required|array',
             'times' => 'nullable|array',
             'email' => 'required|string',

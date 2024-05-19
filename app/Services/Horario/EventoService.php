@@ -37,7 +37,7 @@ class EventoService extends BaseService
 
         $resultEvento->load([
             'room', 'day', 'course',
-            'professor:id,pessoa_id,carga_horaria',
+            'professor:id,pessoa_id,carga_horaria,substitute',
             'professor.pessoa:id,nome,apelido',
             'college_class'
         ]);
