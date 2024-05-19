@@ -5,6 +5,7 @@ namespace App\Services\Professor;
 use App\Models\CoursesProfessor;
 use App\Models\ModelFront\DisponibilidadesProfessores;
 use App\Models\ModelFront\PrioridadesProfessores;
+use App\Models\UnavailableTimeslot;
 use App\Repositories\Professor\ProfessorRepository;
 use App\Services\BaseService;
 use App\Services\Pessoa\PessoaService;
@@ -19,7 +20,7 @@ class ProfessorService extends BaseService
         $this->repository = $repository;
         $this->pessoaService = $pessoaService;
     }
-
+    
     public function criarProfessor(array $inputData): array
     {
         $inputData['perfil_id'] = 1;
@@ -39,24 +40,16 @@ class ProfessorService extends BaseService
                 ]
             );
         }
-        
-        // foreach ($inputData['prioridades'] as $prioridadeId){
-        //     PrioridadesProfessores::create(
-        //         [
-        //             'professor_id' => $professor['id'],
-        //             'prioridade_id' => $prioridadeId
-        //             ]
-        //         );
-        //     }
-            
-        //     foreach ($inputData['disponibilidades'] as $disponibilidadeId){
-        //         DisponibilidadesProfessores::create(
-        //             [
-        //             'professor_id' => $professor['id'],
-        //             'disponibilidade_id' => $disponibilidadeId
-        //         ]
-        //     );
-        // }
+
+        foreach ($inputData['times'] as $time){
+            UnavailableTimeslot::create(
+                [
+                    'professor_id' => $professor['id'],
+                    'day_id' => $time['day_id'],
+                    'timeslot_id' => $time['timeslot_id']
+                    ]
+                );
+            }
 
         return $inputData;
     }
@@ -76,24 +69,15 @@ class ProfessorService extends BaseService
             );
         }
 
-        // foreach ($inputData['prioridades'] as $prioridadeId){
-        //     PrioridadesProfessores::updateOrCreate(
-        //         [
-        //             'professor_id' => $id,
-        //             'prioridade_id' => $prioridadeId
-        //             ]
-        //         );
-        //     }
-            
-        //     foreach ($inputData['disponibilidades'] as $disponibilidadeId){
-        //         DisponibilidadesProfessores::updateOrCreate(
-        //             [
-        //             'professor_id' => $id,
-        //             'disponibilidade_id' => $disponibilidadeId
-        //         ]
-        //     );
-        // }
-
+        foreach ($inputData['times'] as $time){
+            UnavailableTimeslot::updateOrCreate(
+                [
+                    'professor_id' => $id,
+                    'day_id' => $time['day_id'],
+                    'timeslot_id' => $time['timeslot_id']
+                    ]
+                );
+            }
         return $inputData;
     }
 }
