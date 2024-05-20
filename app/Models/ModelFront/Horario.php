@@ -21,7 +21,6 @@ class Horario extends BaseModel
 
     public function horario(): HasMany
     {
-         return $this->hasMany( ProfessorSchedule::class, 'horario_id');
+        return $this->hasMany(ProfessorSchedule::class, 'horario_id');
     }
-
 }

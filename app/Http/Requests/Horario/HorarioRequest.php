@@ -15,7 +15,6 @@ class HorarioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'versao' => 'required|string',
             'semestre' => 'required|numeric',
             'horario.*.periodo' => 'required|numeric',
         ];

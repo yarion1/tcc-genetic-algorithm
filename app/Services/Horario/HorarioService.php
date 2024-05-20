@@ -62,8 +62,51 @@ class HorarioService extends BaseService
         return $pdf->loadView('templateHorario.horario', ['dados' => $dados['horario']],)->setPaper('A4', 'landscape')->stream('horario.pdf');
     }
 
-    public function criarHorario(array $dados)
+    private function gerarCodigoVersao($versaoOrigem = null, $versaoId = null)
     {
+        if(!isset($versaoOrigem)) {
+            $versao = $this->repository->getModel()->where('versao', 'like', '%.0')->pluck('versao')->last();
+         
+            if (!isset($versao)) {
+                return "1.0";
+            }
+
+            $versao = explode('.', $versao);
+            $firstDigit = intval($versao[0]) + 1;
+            
+            $versao = "$firstDigit.0";
+
+            return $versao;
+        } 
+
+        $ultimoDigitoPai = intval(substr($versaoOrigem, -1));
+        
+        $ultimaVersaoCopia = $this->repository->getModel()->where('chave_pai', $versaoId)->pluck('versao')->last();
+        $ultimaVersaoCopia = explode('.', $ultimaVersaoCopia);
+        $ultimoDigitoCopia = !$ultimaVersaoCopia ? 0 : intval($ultimaVersaoCopia[count($ultimaVersaoCopia) - 1]);
+        $ultimoDigitoCopia++;
+
+        $resto = substr($versaoOrigem, 0, $ultimoDigitoPai == 0 ? strlen($versaoOrigem) - 2 : strlen($versaoOrigem));
+        
+        $versao = "$resto.$ultimoDigitoCopia";
+        
+        return $versao;
+    }
+    
+
+    public function criarHorario(array $dados, bool $copia = false)
+    {
+        $versaoOrigem = $dados['versao'] ?? null;
+        $versaoId = $dados['id'] ?? null;
+
+        $versao = $this->gerarCodigoVersao($versaoOrigem, $versaoId);
+
+        $dados['versao'] = $versao;
+
+        if ($copia) {
+            $dados['chave_pai'] = $dados['id'];
+            unset($dados['id']);
+        }
 
         $resultHorario = $this->repository->create($dados);
 
@@ -111,9 +154,8 @@ class HorarioService extends BaseService
     public function criarCopia(int $id)
     {
         $horarioAtual = $this->repository->find(with: ['horario'])->findOrFail($id);
-        unset($horarioAtual['id']);
         unset($horarioAtual['versao_atual']);
-        $result = $this->criarHorario($horarioAtual->toArray());
+        $result = $this->criarHorario($horarioAtual->toArray(), true);
         return $result;
     }
 
