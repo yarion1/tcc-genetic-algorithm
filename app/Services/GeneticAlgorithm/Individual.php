@@ -27,7 +27,7 @@ class Individual
      *
      * @var Timetable The timetable
      */
-    public function __construct($timetable = null, $horario_id)
+    public function __construct($timetable = null, $horario_id = null)
     {
 
         if ($timetable) {
@@ -42,6 +42,7 @@ class Individual
                         $courseIds[$courseId->course_id] = $courseId;
                     }
                 }
+                ProfessorSchedule::where('horario_id', $horario_id)->delete();
                 self::$partialApplied = true;
             } else {
                 $partial = collect();

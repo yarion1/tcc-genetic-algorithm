@@ -10,6 +10,7 @@ use App\Models\Timeslot as TimeslotModel;
 use App\Models\Timetable as TimetableModel;
 use App\Models\Professor as ProfessorModel;
 use App\Models\CollegeClass as CollegeClassModel;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -158,11 +159,11 @@ class TimetableGA
 
             Individual::$partialApplied = false;
 
-            $maxGenerations = 1500;
+            $maxGenerations = 400;
 
             $timetable = $this->initializeTimetable();
 
-            $algorithm = new GeneticAlgorithm(100, 0.01, 0.9, 2, 10);
+            $algorithm = new GeneticAlgorithm(130, 0.01, 0.9, 2, 10);
 
             $horario_id = $this->timetable->horario_id;
 
@@ -238,6 +239,7 @@ class TimetableGA
                     'title' => "Aula de ".$title,
                 ]);
             }
+            Cache::flush();
             event(new TimetablesGenerated($this->timetable));
         } catch (\Throwable $th) {
             Log::error("Error while generating timetable " . $th->getMessage(), ['trace' => $th->getTrace()]);

@@ -25,8 +25,7 @@ class TimetablesController extends Controller
     public function __construct(TimetableService $service)
     {
         $this->service = $service;
-//        $this->middleware('auth');
-//        $this->middleware('activated');
+        $this->middleware('jwt.auth');
     }
 
     /**
@@ -88,7 +87,7 @@ class TimetablesController extends Controller
         }
 
         $timetable = Timetable::create([
-            'user_id' => 1,
+            'user_id' => Auth::user()->id,
             'academic_period_id' => $request->academic_period_id,
             'status' => 'IN PROGRESS',
             'name' => $request->name,

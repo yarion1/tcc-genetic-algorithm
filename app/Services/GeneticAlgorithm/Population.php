@@ -23,7 +23,7 @@ class Population
      * @param int $populationSize Size of population
      * @param Timetable $timetable Timetable for initializing individuals
      */
-    public function __construct($populationSize = null, $timetable = null, $horario_id)
+    public function __construct($populationSize = null, $timetable = null, $horario_id = null)
     {
         $this->population = [];
 

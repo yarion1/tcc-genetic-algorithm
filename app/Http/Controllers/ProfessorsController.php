@@ -6,7 +6,7 @@ use App\Models\Course;
 use App\Models\Day;
 use App\Models\Professor;
 use App\Models\Timeslot;
-use database\ProfessorsService;
+use App\Services\ProfessorsService;
 use Illuminate\Http\Request;
 use Response;
 
