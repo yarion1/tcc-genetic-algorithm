@@ -4,6 +4,7 @@ namespace App\Models\ModelFront\Base;
 
 use App\Models\ModelFront\Pessoa;
 use App\Models\ModelFront\Scopes\ActiveScope;
+use App\Models\ModelFront\Scopes\OrderScope;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -65,6 +66,7 @@ class BaseModelCommom extends Model implements AuditableContract
     protected static function booted(): void
     {
         static::addGlobalScope(new ActiveScope);
+        static::addGlobalScope(new OrderScope);
     }
 
     protected static function boot()

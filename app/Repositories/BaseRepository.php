@@ -30,7 +30,7 @@ class BaseRepository
             $model->has($has);
         }
 
-        return $model->with($with)->withCount($withCount)->orderBy(...$orderBy);
+        return $model->with($with)->withCount($withCount);
     }
 
     public function find(array $select = [], array|string $with = [], array $withCount = [], string $has = null, array $orderBy = ['id', 'desc'])

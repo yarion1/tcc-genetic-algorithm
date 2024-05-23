@@ -21,7 +21,7 @@ class HorarioController extends Controller
 
     public function index()
     {
-        return response()->json($this->service->find()->get());
+        return response()->json($this->service->find()->orderHorarioFilho()->get());
     }
 
 

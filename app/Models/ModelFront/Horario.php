@@ -6,7 +6,7 @@ use App\Models\ModelFront\Base\BaseModel;
 use App\Models\ProfessorSchedule;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 class Horario extends BaseModel
 {
     protected $guarded = [
@@ -22,5 +22,10 @@ class Horario extends BaseModel
     public function horario(): HasMany
     {
         return $this->hasMany(ProfessorSchedule::class, 'horario_id');
+    }
+
+    public function scopeOrderHorarioFilho(EloquentBuilder $query): void
+    {
+        $query->orderByRaw("string_to_array(versao, '.') asc");
     }
 }
