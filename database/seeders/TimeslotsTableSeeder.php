@@ -14,20 +14,26 @@ class TimeslotsTableSeeder extends Seeder
     {
         \DB::table('timeslots')->insert([
             [
-                'time' => '8:00 - 10:30',
-                'rank' => 1
+                'id' => 1,
+                'time' => '08:00 - 11:30',
+                'rank' => 1,
+                'startTime' => '08:00:00',
+                'endTime' => '11:30:00',
+
             ],
             [
-                'time' => '10:30 - 12:30',
-                'rank' => 2
+                'id' => 2,
+                'time' => '14:00 - 17:30',
+                'rank' => 2,
+                'startTime' => '14:00:00',
+                'endTime' => '17:30:00'
             ],
             [
-                'time' => '13:00 - 15:00',
-                'rank' => 3
-            ],
-            [
-                'time' => '15:00 - 17:00',
-                'rank' => 4
+                'id' => 3,
+                'time' => '19:00 - 22:30',
+                'rank' => 3,
+                'startTime' => '19:00:00',
+                'endTime' => '22:30:00'
             ]
         ]);
     }
