@@ -14,32 +14,58 @@ class RoomsTableSeeder extends Seeder
     {
         \DB::table('rooms')->insert([
             [
-                'name' => 'SF 19',
-                'capacity' => 180
+                'name' => 'Bloco lll, laboratorio 104',
+                'capacity' => 40,
+                'tipo_sala_id' => '',
+                'nome_abreviado' => ''
             ],
             [
-                'name' => 'SF 20',
-                'capacity' => 180
+                'name' => 'Bloco J, sala 111',
+                'capacity' => 40,
+                'tipo_sala_id' => '',
+                'nome_abreviado' => ''
             ],
             [
-                'name' => 'FF 1',
-                'capacity' => 200
+                'name' => 'Bloco lll, laboratorio 110',
+                'capacity' => 40,
+                'tipo_sala_id' => '',
+                'nome_abreviado' => ''
             ],
             [
-                'name' => 'SF 1',
-                'capacity' => 200
+                'name' => 'Bloco lll, sala 207',
+                'capacity' => 40,
+                'tipo_sala_id' => '',
+                'nome_abreviado' => ''
             ],
             [
-                'name' => 'SF 8',
-                'capacity' => 150
+                'name' => 'Bloco lll, laboratorio 109',
+                'capacity' => 40,
+                'tipo_sala_id' => '',
+                'nome_abreviado' => ''
             ],
             [
-                'name' => 'SF 7',
-                'capacity' => 120
+                'name' => 'Bloco G, laboratório 04',
+                'capacity' => 40,
+                'tipo_sala_id' => '',
+                'nome_abreviado' => ''
             ],
             [
-                'name' => 'FF 24',
-                'capacity' => 120
+                'name' => 'Bloco lll, Sala 208',
+                'capacity' => 40,
+                'tipo_sala_id' => '',
+                'nome_abreviado' => ''
+            ],
+            [
+                'name' => 'Bloco lll, laboratorio 106',
+                'capacity' => 40,
+                'tipo_sala_id' => '',
+                'nome_abreviado' => ''
+            ],
+            [
+                'name' => 'Bloco G, laboratório 107',
+                'capacity' => 40,
+                'tipo_sala_id' => '',
+                'nome_abreviado' => ''
             ]
         ]);
     }
