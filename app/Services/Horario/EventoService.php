@@ -22,17 +22,19 @@ class EventoService extends BaseService
         $periodoId = CollegeClass::where('period', $dados['periodo'])->first();
 
         $resultEvento = $this->repository->create([
-            'horario_id' => $dados['horario_id'],
-            'timeslot_id' => $dados['timeslot_id'],
             'timetable_id' =>  85,
-            'class_id' => $periodoId['id'],
             'title' => $dados['title'],
             'startTime' => $dados['startTime'],
             'endTime' => $dados['endTime'],
-            'room_id' => $dados['room_id'],
-            'course_id' => $dados['course_id'],
-            'professor_id' => $dados['professor_id'],
-            'day_id' => $dados['day_id'],
+            'horario_id' => (int)$dados['horario_id'],
+            'timeslot_id' => (int)$dados['timeslot_id'],
+            'timetable_id' =>  85,
+            'class_id' => (int)$periodoId['id'],
+            'room_id' => (int)$dados['room_id'],
+            'course_id' => (int)$dados['course_id'],
+            'professor_id' => (int)$dados['professor_id'],
+            'day_id' => (int)$dados['day_id'],
+
         ]);
 
         $resultEvento->load([

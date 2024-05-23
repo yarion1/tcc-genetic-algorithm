@@ -91,7 +91,7 @@
                 </tr>
                 <tr>
 
-                    <td class="tg-0pky" rowspan="3" style="background-color: #FCE198; width: 30px;">
+                    <td class="tg-0pky" rowspan="1" style="background-color: #FCE198; width: 30px;">
                         08:00:00 - 11:40:00
                     </td>
                     @for ($day = 1; $day <= 5; $day++)
@@ -105,15 +105,32 @@
                                         });
                                     @endphp
                                     @foreach ($eventsOfDay as $key => $event)
+                                        @php
+                                            // Calcular a duração do evento em minutos
+                                            $startTime = strtotime('08:00:00');
+                                            $endTime = strtotime('11:40:00');
+                                            $eventStartTime = strtotime($event['startTime']);
+                                            $eventEndTime = strtotime($event['endTime']);
+                                            $duration = ceil(($eventEndTime - $eventStartTime) / 60); // Em minutos
+
+                                            // Calcular rowspan
+                                            $rowspan = ceil(($eventEndTime - $startTime) / (20 * 60)); // Cada célula é de 20 minutos
+                                        @endphp
+
+                                        <td rowspan="{{ $rowspan }}"
+                                            style="border: none; max-width: 60px; vertical-align: middle; text-align: center;">
+                                            <div
+                                                style="font-weight: bold; font-size: 10px; margin-top: 10px; margin-bottom: 10px;">
+                                                {{ $event['title'] }}</div>
+                                            <div>{{ $event['room']['name'] }}</div>
+                                            <div>{{ $event['professor']['pessoa']['apelido'] }}</div>
+                                        </td>
                                         <td
-                                            style="border: none; max-width: 60px; vertical-align: middle;  text-align: center;">
-                                            {{ $event['title'] }}</td>
-                                             <td
-                                                style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
-                                            </td>
-                                       
+                                            style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
+                                        </td>
                                     @endforeach
                                 </tr>
+
                             </table>
                         </td>
                     @endfor
@@ -122,62 +139,9 @@
 
 
 
-                <tr>
 
-                    @for ($day = 1; $day <= 5; $day++)
-                        <td class="tg-0pky" style="margin: 0; padding: 0;">
-                            <table style="border:none; border-collapse: collapse; border-spacing: 0; width: 100%">
-                                <tr>
-                                    @php
-                                        $eventsOfDay = array_filter($horario['events'], function ($event) use ($day) {
-                                            return $event['daysOfWeek'] == $day &&
-                                                mesmoDia($event, '08:00:00', '11:40:00');
-                                        });
-                                    @endphp
-                                    @foreach ($eventsOfDay as $key => $event)
-                                        <td
-                                            style="border: none; max-width: 60px; vertical-align: middle;  text-align: center;">
-                                            {{ $event['room']['name'] }}</td>
-                                        @if ($key < count($eventsOfDay) - 1)
-                                            <td
-                                                style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
-                                            </td>
-                                        @endif
-                                    @endforeach
-                                </tr>
-                            </table>
-                        </td>
-                    @endfor
-                </tr>
 
-                <tr>
-
-                    @for ($day = 1; $day <= 5; $day++)
-                        <td class="tg-0pky" style="margin: 0; padding: 0; background-color: #cfe2f2;">
-                            <table style="border:none; border-collapse: collapse; border-spacing: 0; width: 100%">
-                                <tr>
-                                    @php
-                                        $eventsOfDay = array_filter($horario['events'], function ($event) use ($day) {
-                                            return $event['daysOfWeek'] == $day &&
-                                                mesmoDia($event, '08:00:00', '11:40:00');
-                                        });
-                                    @endphp
-                                    @foreach ($eventsOfDay as $key => $event)
-                                        <td
-                                            style="border: none; max-width: 60px; vertical-align: middle;  text-align: center;">
-                                            {{ $event['professor']['pessoa']['apelido'] }}</td>
-                                        @if ($key < count($eventsOfDay) - 1)
-                                            <td
-                                                style="border-right: 1px solid #CCCCCC; width: 1px; border-top: none; border-bottom: none; border-left: none">
-                                            </td>
-                                        @endif
-                                    @endforeach
-                                </tr>
-                            </table>
-                        </td>
-                    @endfor
-                </tr>
-
+                {{-- 
                 <tr>
                     <td class="tg-0pky" rowspan="3" style="background-color: #FCE198; width: 30px;">
                         14:00:00 - 17:40:00
@@ -351,7 +315,7 @@
                             </table>
                         </td>
                     @endfor
-                </tr>
+                </tr> --}}
 
 
 
