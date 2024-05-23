@@ -13,9 +13,6 @@ class AcademicPeriodsTableSeeder extends Seeder
     public function run()
     {
           \DB::table('academic_periods')
-            ->insert([
-                ["name" => "Semester I"],
-                ["name" => "Semester II"],
-            ]);
+            ->insert([['id'=>1, 'name' => 'Semester I']]);
     }
 }
