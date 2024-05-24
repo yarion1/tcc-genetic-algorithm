@@ -81,7 +81,7 @@ class HorarioService extends BaseService
 
         $ultimoDigitoPai = intval(substr($versaoOrigem, -1));
         
-        $ultimaVersaoCopia = $this->repository->getModel()->where('chave_pai', $versaoId)->pluck('versao')->last();
+        $ultimaVersaoCopia = $this->repository->getModel()->where('chave_pai', $versaoId)->pluck('versao')->first();
         $ultimaVersaoCopia = explode('.', $ultimaVersaoCopia);
         $ultimoDigitoCopia = !$ultimaVersaoCopia ? 0 : intval($ultimaVersaoCopia[count($ultimaVersaoCopia) - 1]);
         $ultimoDigitoCopia++;
