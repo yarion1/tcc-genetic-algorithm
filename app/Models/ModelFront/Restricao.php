@@ -21,6 +21,6 @@ class Restricao extends BaseModel
 
     public function restricao(): HasMany
     {
-         return $this->hasMany(RestricaoGrupo::class, 'restricao_id');
+         return $this->hasMany(RestricaoGrupo::class, 'restricao_id')->orderBy('id', 'asc');
     }
 }
