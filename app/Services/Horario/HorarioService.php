@@ -169,6 +169,9 @@ class HorarioService extends BaseService
             'horario.course',
             'horario.professor:id,pessoa_id,carga_horaria,substitute',
             'horario.professor.pessoa:id,nome,apelido',
+            'horario.professor.unavailable_timeslots',
+            'horario.professor.unavailable_timeslots.day:id,daysOfWeek,name',
+            'horario.professor.unavailable_timeslots.timeslot:id,startTime,endTime,time',
             'horario.day',
         ])->findOrFail($id);
 

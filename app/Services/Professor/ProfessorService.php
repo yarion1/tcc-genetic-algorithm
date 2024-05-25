@@ -24,7 +24,7 @@ class ProfessorService extends BaseService
     public function criarProfessor(array $inputData): array
     {
         $inputData['perfil_id'] = 1;
-        $pessoa = $this->pessoaService->advancedCreate($inputData);
+        $pessoa = $this->pessoaService->advancedCreate($inputData['pessoa']);
         $professor = $this->repository->create([
             'pessoa_id' => $pessoa['id'],
             'name' => $inputData['nome'],
@@ -59,7 +59,10 @@ class ProfessorService extends BaseService
         // CoursesProfessor::where('professor_id', $id)->delete();
         // PrioridadesProfessores::where('professor_id', $id)->delete();
         // DisponibilidadesProfessores::where('professor_id', $id)->delete();
-
+        if(isset($inputData['pessoa'])) {
+            $this->pessoaService->update($inputData['pessoa_id'], $inputData['pessoa']);
+        }
+      
         foreach ($inputData['courses'] as $disciplinaId) {
             CoursesProfessor::updateOrCreate(
                 [
@@ -69,15 +72,18 @@ class ProfessorService extends BaseService
             );
         }
 
-        foreach ($inputData['times'] as $time){
-            UnavailableTimeslot::updateOrCreate(
-                [
-                    'professor_id' => $id,
-                    'day_id' => $time['day_id'],
-                    'timeslot_id' => $time['timeslot_id']
-                    ]
-                );
-            }
+        if(isset($inputData['times'])) {
+            foreach ($inputData['times'] as $time){
+                UnavailableTimeslot::updateOrCreate(
+                    [
+                        'professor_id' => $id,
+                        'day_id' => $time['day_id'],
+                        'timeslot_id' => $time['timeslot_id']
+                        ]
+                    );
+                }
+        }
+
         return $inputData;
     }
 }

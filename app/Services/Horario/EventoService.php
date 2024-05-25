@@ -28,7 +28,6 @@ class EventoService extends BaseService
             'endTime' => $dados['endTime'],
             'horario_id' => (int)$dados['horario_id'],
             'timeslot_id' => (int)$dados['timeslot_id'],
-            'timetable_id' =>  85,
             'class_id' => (int)$periodoId['id'],
             'room_id' => (int)$dados['room_id'],
             'course_id' => (int)$dados['course_id'],
@@ -41,6 +40,9 @@ class EventoService extends BaseService
             'room', 'day', 'course',
             'professor:id,pessoa_id,carga_horaria,substitute',
             'professor.pessoa:id,nome,apelido',
+            'professor.unavailable_timeslots',
+            'professor.unavailable_timeslots.day:id,daysOfWeek,name',
+            'professor.unavailable_timeslots.timeslot:id,startTime,endTime,time',
             'college_class'
         ]);
         $resultEvento->daysOfWeek = [$resultEvento->day->daysOfWeek];

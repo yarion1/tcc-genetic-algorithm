@@ -15,16 +15,15 @@ class ProfessorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nome' => 'required|string',
-            'apelido' => 'string|nullable',
+            'pessoa.nome' => 'required|string',
+            'pessoa.apelido' => 'string|nullable',
+            'pessoa.cpf' => 'required|string',
+            'pessoa.email' => 'required|string',
+            'pessoa.senha' => 'nullable|string',
             'courses' => 'required|array',
-            'carga_horaria' => 'required|numeric',
-            'cpf' => 'required|string',
+            'carga_horaria' => 'nullable|numeric',
             'substitute' => 'boolean',
-            // 'disponibilidades' => 'required|array',
             'times' => 'nullable|array',
-            'email' => 'required|string',
-            'senha' => 'nullable|string',
         ];
     }
 }

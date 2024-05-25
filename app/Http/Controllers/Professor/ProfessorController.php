@@ -18,7 +18,7 @@ class ProfessorController extends Controller
 
     public function index()
     {
-        return response()->json($this->service->find(with: ['pessoa:id,nome', 'courses:id,name,course_code'])->get());
+        return response()->json($this->service->find(with: ['pessoa:id,nome', 'courses:id,name,course_code', 'unavailable_timeslots'])->get());
     }
 
 
@@ -33,7 +33,7 @@ class ProfessorController extends Controller
     public function show(int $id)
     {
         // return response()->json($this->service->find(with:['disciplinas', 'disciplinas.disciplina', 'prioridades', 'disponibilidades', 'pessoa'])->findOrFail($id));
-        return response()->json($this->service->find(with:['courses', 'pessoa'])->findOrFail($id));
+        return response()->json($this->service->find(with:['courses', 'pessoa', 'unavailable_timeslots'])->findOrFail($id));
     }
 
     public function update(ProfessorRequest $request, int $id)
