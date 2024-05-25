@@ -20,6 +20,7 @@ use App\Http\Controllers\Professor\ProfessorController;
 use App\Http\Controllers\Sala\SalaController;
 use App\Http\Controllers\Sala\TipoSalasController;
 use App\Http\Controllers\Turma\TurmaController;
+use App\Http\Controllers\UnavailableTimeslotController;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +107,12 @@ Route::middleware('jwt.auth')->group(function () {
             Route::get('/{id}', 'show')->whereNumber('id');
             Route::put('/{id}', 'update')->whereNumber('id');
             Route::delete('/{id}', 'destroy')->whereNumber('id');
+        });
+
+        Route::prefix('indisponibilidade')->group(function () {
+            Route::controller(UnavailableTimeslotController::class)->group(function () {
+                Route::delete('/{id}', 'destroy')->whereNumber('id');
+            });
         });
     });
 

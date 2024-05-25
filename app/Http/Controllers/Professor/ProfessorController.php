@@ -18,7 +18,7 @@ class ProfessorController extends Controller
 
     public function index()
     {
-        return response()->json($this->service->find(with: ['pessoa:id,nome', 'courses:id,name,course_code', 'unavailable_timeslots'])->get());
+        return response()->json($this->service->find(with: ['pessoa:id,nome', 'courses:id,name,course_code', 'unavailable_timeslots'], orderBy: ['id', 'desc'])->get());
     }
 
 
@@ -46,7 +46,7 @@ class ProfessorController extends Controller
 
     public function destroy(int $id)
     {
-        $this->service->delete($id, ['disciplinas', 'prioridades', 'disponibilidades', 'pessoa']);
+        $this->service->delete($id, ['schedule']);
         return response()->json(['message' => 'Registro Excluído.']);
     }
 }

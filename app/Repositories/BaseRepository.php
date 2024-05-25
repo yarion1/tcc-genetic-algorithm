@@ -21,10 +21,18 @@ class BaseRepository
         return $this->model;
     }
 
-    private function baseQuery(Model $model, array $select = [], array|string $with = [], array $orderBy = ['id', 'desc'], array $withCount = [], string $has = null)
+    private function baseQuery(Model $model, array $select = [], array|string $with = [], array $orderBy = [], array $withCount = [], string $has = null)
     {
         $model = $this->model->query();
         $model->select(...$select);
+
+        if (count($orderBy) > 0 && is_array($orderBy[0])) {
+            foreach ($orderBy as $order) {
+                $model->orderBy(...$order);
+            }
+        } else if(count($orderBy) > 0) {
+            $model->orderBy(...$orderBy);
+        }
 
         if ($has) {
             $model->has($has);
@@ -33,13 +41,13 @@ class BaseRepository
         return $model->with($with)->withCount($withCount);
     }
 
-    public function find(array $select = [], array|string $with = [], array $withCount = [], string $has = null, array $orderBy = ['id', 'desc'])
+    public function find(array $select = [], array|string $with = [], array $withCount = [], string $has = null, array $orderBy = [])
     {
         return $this->baseQuery(model: $this->model, select: $select, with: $with, withCount: $withCount, has: $has, orderBy: $orderBy);
     }
 
 
-    private function baseFindByKey(Model $model, array $query, array $select = [], array|string $with = [], array $withCount = [], string $has = null, array $orderBy = ['id', 'desc'])
+    private function baseFindByKey(Model $model, array $query, array $select = [], array|string $with = [], array $withCount = [], string $has = null, array $orderBy = [])
     {
         $model = $this->baseQuery(model: $model, select: $select, with: $with, withCount: $withCount, has: $has, orderBy: $orderBy);
 
@@ -55,7 +63,7 @@ class BaseRepository
         return $model;
     }
 
-    public function findByKey(array $query, array $select = [], array|string $with = [], array $withCount = [], string $has = null, array $orderBy = ['id', 'desc'])
+    public function findByKey(array $query, array $select = [], array|string $with = [], array $withCount = [], string $has = null, array $orderBy = [])
     {
         return $this->baseFindByKey(model: $this->model, query: $query, select: $select, with: $with, withCount: $withCount, has: $has, orderBy: $orderBy);
     }

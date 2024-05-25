@@ -19,7 +19,7 @@ class DisciplinaController extends Controller
 
     public function index()
     {
-        return response()->json($this->service->find(with: ['collegeClass:id,name,period'])->get());
+        return response()->json($this->service->find(with: ['collegeClass:id,name,period'], orderBy: ['college_class_id', 'asc'])->get());
     }
 
     public function store(DisciplinaRequest $request)

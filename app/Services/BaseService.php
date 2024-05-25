@@ -3,11 +3,12 @@
 namespace App\Services;
 
 use App\Repositories\BaseRepository;
-use Doctrine\DBAL\Query\QueryException;
+use Illuminate\Database\QueryException;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class BaseService
 {
@@ -122,14 +123,24 @@ class BaseService
 
     public function create(array $inputData, array $relations = [])
     {
-        return DB::transaction(function () use ($inputData, $relations) {
-            $toCreate = $this->preventFileSerialization($inputData);
-            $createdData = $this->repository->create($toCreate);
-            $createReturn = $this->afterCreate($createdData, $inputData);
 
-            if ($createReturn) return $createReturn;
-            return $this->createRelations($createdData, $inputData, $relations);
-        });
+        try {
+            return DB::transaction(function () use ($inputData, $relations) {
+                $toCreate = $this->preventFileSerialization($inputData);
+                $createdData = $this->repository->create($toCreate);
+                $createReturn = $this->afterCreate($createdData, $inputData);
+
+                if ($createReturn) return $createReturn;
+                return $this->createRelations($createdData, $inputData, $relations);
+            });
+        } catch (QueryException $e) {
+            throw $e;
+            // throw new Exception('Erro ao criar registro.');
+        } catch (ValidationException $e) {
+            throw ValidationException::withMessages($e->errors());
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     private function createRelations(mixed $createdData, array $inputData, array $relations): mixed
@@ -144,12 +155,21 @@ class BaseService
 
     public function advancedCreate(array $inputData, array $relations = [])
     {
-        return DB::transaction(function () use ($inputData, $relations) {
-            $inputData = $this->beforeCreate($inputData);
-            $createdData = $this->create($inputData, $relations);
-            $this->afterCreate($createdData, $inputData);
-            return $createdData;
-        });
+        try {
+            return DB::transaction(function () use ($inputData, $relations) {
+                $inputData = $this->beforeCreate($inputData);
+                $createdData = $this->create($inputData, $relations);
+                $this->afterCreate($createdData, $inputData);
+                return $createdData;
+            });
+        } catch (QueryException $e) {
+            throw $e;
+            // throw new Exception('Erro ao criar registro.');
+        } catch (ValidationException $e) {
+            throw ValidationException::withMessages($e->errors());
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     protected function afterCreate(mixed $createdData, array $inputData): mixed
@@ -159,17 +179,24 @@ class BaseService
 
     public function update(int $id, array $inputData, array $relations = [])
     {
-        return DB::transaction(function () use ($id, $inputData, $relations) {
-            $toUpdate = $this->preventFileSerialization($inputData);
-            $inputData = $this->beforeUpdate($toUpdate, $id);
-            $updatedData = $this->repository->update($id, $inputData);
-            $this->updateRelations($updatedData, $inputData, $relations);
-            $updateReturn = $this->afterUpdate($updatedData, $inputData);
+        try {
+            return DB::transaction(function () use ($id, $inputData, $relations) {
+                $toUpdate = $this->preventFileSerialization($inputData);
+                $inputData = $this->beforeUpdate($toUpdate, $id);
+                $updatedData = $this->repository->update($id, $inputData);
+                $this->updateRelations($updatedData, $inputData, $relations);
+                $updateReturn = $this->afterUpdate($updatedData, $inputData);
 
-            if ($updateReturn) return $updateReturn;
+                if ($updateReturn) return $updateReturn;
 
-            return $updatedData;
-        });
+                return $updatedData;
+            });
+        } catch (QueryException $e) {
+            throw $e;
+            throw new Exception('Erro ao atualizar registros.');
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
 
@@ -247,7 +274,6 @@ class BaseService
             throw $e;
             // throw new AppError(message: $e->getMessage(), customMessage: 'Erro ao atualizar relações do registro.');
         }
-
     }
 
 
@@ -305,12 +331,18 @@ class BaseService
 
     public function advancedUpdate(int $id, array $inputData, array $relations = [])
     {
-
-        return DB::transaction(function () use ($id, $inputData, $relations) {
-            $inputData = $this->beforeUpdate($inputData, $id);
-            $updatedData = $this->update($id, $inputData, $relations);
-            return $this->afterUpdate($updatedData, $inputData);
-        });
+        try {
+            return DB::transaction(function () use ($id, $inputData, $relations) {
+                $inputData = $this->beforeUpdate($inputData, $id);
+                $updatedData = $this->update($id, $inputData, $relations);
+                return $this->afterUpdate($updatedData, $inputData);
+            });
+        } catch (QueryException $e) {
+            throw $e;
+            throw new Exception('Erro ao atualizar registros.');
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     protected function afterUpdate(mixed $updatedData, array $inputData): mixed
@@ -319,6 +351,11 @@ class BaseService
     }
 
     protected function beforeDelete(int $id)
+    {
+        //
+    }
+
+    protected function afterDelete(int $id)
     {
         //
     }
@@ -338,6 +375,9 @@ class BaseService
                 }
             }
         }
+
+        $this->afterDelete($id);
+
         return $this->repository->delete($id);
     }
 
