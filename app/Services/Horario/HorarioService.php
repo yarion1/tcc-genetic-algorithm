@@ -145,6 +145,7 @@ class HorarioService extends BaseService
         $result = $this->repository->find()->withoutGlobalScope(ActiveScope::class)->findOrFail($id);
 
         $result->versao_atual = $ativo;
+        $result->load('usuarioCadastro');
         $result->update();
 
         $message = $ativo ? 'Versão do Horário Ativada' : 'Versão do Horário Desativada';
@@ -173,6 +174,7 @@ class HorarioService extends BaseService
             'horario.professor.unavailable_timeslots.day:id,daysOfWeek,name',
             'horario.professor.unavailable_timeslots.timeslot:id,startTime,endTime,time',
             'horario.day',
+            'usuarioCadastro',
         ])->findOrFail($id);
 
         $result->horario->transform(function ($evt) {

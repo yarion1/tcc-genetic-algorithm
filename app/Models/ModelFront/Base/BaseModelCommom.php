@@ -22,12 +22,12 @@ class BaseModelCommom extends Model implements AuditableContract
 
     public function usuarioCadastro(): BelongsTo
     {
-        return $this->belongsTo(Pessoa::class, 'criado_por')->select('id', 'nome', 'foto', 'cpf');
+        return $this->belongsTo(Pessoa::class, 'criado_por')->select('id', 'nome');
     }
 
     public function usuarioAlteracao(): BelongsTo
     {
-        return $this->belongsTo(Pessoa::class, 'atualizado_por')->select('id', 'nome', 'foto', 'cpf');
+        return $this->belongsTo(Pessoa::class, 'atualizado_por')->select('id', 'nome');
     }
 
     public function usuarioExclusao(): BelongsTo
