@@ -53,6 +53,7 @@ class RestricaoGrupoEventoController extends Controller
     {
         $validated = $request->all();
         $result = $this->service->update($id, $validated, ['sala_id' => 'salas', 'disciplina_id' => 'disciplinas']);
+        $result->load(['disciplinas', 'salas']);
         return response()->json(['message' => 'Registro Atualizado.', 'result' => $result]);
     }
 
