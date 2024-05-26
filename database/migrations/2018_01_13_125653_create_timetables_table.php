@@ -32,7 +32,7 @@ class CreateTimetablesTable extends Migration
 
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users')
+                ->on('pessoas')
                 ->onDelete('cascade');
 
             $table->foreign('academic_period_id')
