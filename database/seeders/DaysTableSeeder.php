@@ -15,43 +15,43 @@ class DaysTableSeeder extends Seeder
         $days = [
             [
                 'id' => 1,
-                'name' => 'Monday',
+                'name' => 'Segunda',
                 'short_name' => 'Mon',
                 'daysOfWeek' => 1,
             ],
             [
                 'id' => 2,
-                'name' => 'Tuesday',
+                'name' => 'Terça',
                 'short_name' => 'Tue',
                 'daysOfWeek' => 2,
             ],
             [
                 'id' => 3,
-                'name' => 'Wednesday',
+                'name' => 'Quarta',
                 'short_name' => 'Wed',
                 'daysOfWeek' => 3,
             ],
             [
                 'id' => 4,
-                'name' => 'Thursday',
+                'name' => 'Quinta',
                 'short_name' => 'Thur',
                 'daysOfWeek' => 4,
             ],
             [
                 'id' => 5,
-                'name' => 'Friday',
+                'name' => 'Sexta',
                 'short_name' => 'Fri',
                 'daysOfWeek' => 5,
             ],
             [
                 'id' => 6,
-                'name' => 'Saturday',
+                'name' => 'Sábado',
                 'short_name' => 'Sat',
                 'daysOfWeek' => 6,
             ],
             [
                 'id' => 7,
-                'name' => 'Sunday',
+                'name' => 'Domingo',
                 'short_name' => 'Sun',
                 'daysOfWeek' => 8,
             ]
