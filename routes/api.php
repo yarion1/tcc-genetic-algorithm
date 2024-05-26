@@ -11,7 +11,6 @@ use App\Http\Controllers\TimeslotsController;
 use App\Http\Controllers\Horario\EventoController;
 use App\Http\Controllers\Horario\HorarioController;
 use App\Http\Controllers\Horario\HorarioEventoController;
-use App\Http\Controllers\Horario\NotificacaoHorarioController;
 use App\Http\Controllers\Horario\Restricao\RestricaoClassificacaoController;
 use App\Http\Controllers\Horario\Restricao\RestricaoController;
 use App\Http\Controllers\Horario\Restricao\RestricaoGrupoController;
@@ -144,12 +143,6 @@ Route::middleware('jwt.auth')->group(function () {
     });
 
     Route::prefix('horario')->group(function () {
-        Route::prefix('notificacoes')->group(function () {
-            Route::controller(NotificacaoHorarioController::class)->group(function () {
-                Route::get('/', 'index');
-            });
-        });
-
         Route::prefix('geracao')->group(function () {
             Route::controller(TimetablesController::class)->group(function () {
                 Route::post('/', 'store');
