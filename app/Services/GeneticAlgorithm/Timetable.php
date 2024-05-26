@@ -461,7 +461,7 @@ class Timetable
         });
 
         $alocationCodes = [];
-        $resAlocation;
+        $resAlocation = null;
         if($alocationCourse->isNotEmpty()){
             foreach ($alocationCourse as $alocationCode) {
                 $item = $alocationCode->restricao_grupo_id . $alocationCode->daysOfWeek . $alocationCode->startTime . $alocationCode->endTime;
@@ -473,7 +473,7 @@ class Timetable
         $exceptionCourses = Cache::rememberForever('exception_restrictions', function () {
             return DB::table('restricao_grupo_disciplinas')
                 ->select('disciplina_id')
-                ->where(["ativo" => 1])
+                ->where("ativo", 1)
                 ->get()
                 ->keyBy('disciplina_id');
         });
@@ -546,7 +546,7 @@ class Timetable
                 }
             }
 
-            if (isset($exceptionCourses[$moduleId])) {
+            if ($exceptionCourses->isNotEmpty() && isset($exceptionCourses[$moduleId])) {
                 if (!isset($alocationCodes[$strRes])) {
                     if ($resAlocation == 1) {
                         $clashes += $hard;
@@ -560,16 +560,8 @@ class Timetable
                 }
             }
 
-            if (!isset($exceptionCourses[$moduleId]) && $timeslotId == 4) {
-                if ($resAlocation == 1) {
-                    $clashes += $hard;
-                }
-                if ($resAlocation == 2) {
-                    $clashes += $soft;
-                }
-                if ($resAlocation == 3) {
-                    $clashes += $really;
-                }
+            if ($exceptionCourses->isEmpty() && $timeslotId == 3 || !isset($exceptionCourses[$moduleId]) && $timeslotId == 3) {
+                $clashes += $hard;
             }
 
             if ($roomCapacity < $courseSize) {

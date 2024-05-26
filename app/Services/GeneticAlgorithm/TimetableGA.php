@@ -163,7 +163,7 @@ class TimetableGA
 
             $timetable = $this->initializeTimetable();
 
-            $algorithm = new GeneticAlgorithm(130, 0.01, 0.9, 2, 10);
+            $algorithm = new GeneticAlgorithm(150, 0.01, 0.9, 2, 10);
 
             $horario_id = $this->timetable->horario_id;
 
