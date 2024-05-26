@@ -26,14 +26,19 @@ class ProfessorService extends BaseService
 
     public function criarProfessor(array $inputData): array
     {
-        $inputData['perfil_id'] = 1;
-        $pessoa = $this->pessoaService->advancedCreate($inputData['pessoa']);
-        $professor = $this->repository->create([
-            'pessoa_id' => $pessoa['id'],
-            'name' => $pessoa['nome'],
-            'email' => $pessoa['email'],
+        $pessoa = null;
+        if (isset($inputData['pessoa']['cpf'])) {
+            $pessoa = $this->pessoaService->advancedCreate($inputData['pessoa']);
+        }
+        
+        $professorData = [
+            'pessoa_id' => $pessoa ? $pessoa['id'] : null,
+            'name' => $inputData['name'],
+            'email' => $inputData['email'] ?? null,
             'carga_horaria' => $inputData['carga_horaria']
-        ]);
+        ];
+        
+        $professor = $this->repository->create($professorData);
 
         foreach ($inputData['courses'] as $disciplinaId) {
             CoursesProfessor::create(
@@ -58,8 +63,10 @@ class ProfessorService extends BaseService
     {
         if (isset($inputData['pessoa'])) {
             if ($inputData['pessoa_id'] == null) {
-                $pessoa = $this->pessoaService->advancedCreate($inputData['pessoa']);
-                $inputData['pessoa_id'] = $pessoa->id;
+                if (isset($inputData['pessoa']['cpf'])) {
+                    $pessoa = $this->pessoaService->advancedCreate($inputData['pessoa']);
+                    $inputData['pessoa_id'] = $pessoa->id;
+                }
             } else {
                 $this->pessoaService->update($inputData['pessoa_id'], $inputData['pessoa']);
             }
@@ -101,6 +108,8 @@ class ProfessorService extends BaseService
     protected function afterDelete(int $id)
     {
         $professor = $this->repository->find()->findOrFail($id);
-        $this->pessoaService->delete($professor['pessoa_id']);
+        if($professor['pessoa_id'] != null) {
+            $this->pessoaService->delete($professor['pessoa_id']);
+        }
     }
 }
