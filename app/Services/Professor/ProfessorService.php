@@ -50,14 +50,19 @@ class ProfessorService extends BaseService
                 $this->unavailableTimeslotRepository->create($time);
             }
         }
-
+        
         return $inputData;
     }
-
+    
     protected function beforeUpdate(array $inputData, int $id): array
     {
         if (isset($inputData['pessoa'])) {
-            $this->pessoaService->update($inputData['pessoa_id'], $inputData['pessoa']);
+            if ($inputData['pessoa_id'] == null) {
+                $pessoa = $this->pessoaService->advancedCreate($inputData['pessoa']);
+                $inputData['pessoa_id'] = $pessoa->id;
+            } else {
+                $this->pessoaService->update($inputData['pessoa_id'], $inputData['pessoa']);
+            }
         }
 
         $currentCourses = CoursesProfessor::where('professor_id', $id)
