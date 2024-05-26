@@ -40,4 +40,8 @@ class TimetableComplete implements ShouldBroadcast
             new Channel('channel-name'),
         ];
     }
+    public function broadcastAs()
+    {
+        return 'my-event';
+    }
 }
