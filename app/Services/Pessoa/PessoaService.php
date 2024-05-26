@@ -86,9 +86,6 @@ class PessoaService extends BaseService
             throw new Exception('Email já cadastrado.');
         }
         
-        if (isset($dados['foto'])) {
-            $dados['foto'] = $this->saveFile(file: $dados['foto'], folder: 'pessoas/' . $dados['cpf'], fileName: 'perfil');
-        }
         unset($dados['cpf']);
         return $this->repository->update($id, $dados);
     }

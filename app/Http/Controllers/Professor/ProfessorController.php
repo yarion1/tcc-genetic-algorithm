@@ -29,6 +29,17 @@ class ProfessorController extends Controller
         return response()->json(['message' => 'Registro Cadastrado.']);
     }
 
+    public function showPessoaProfessor(int $id)
+    {
+        $result = $this->service->find(with:['courses', 'pessoa', 'unavailable_timeslots'])->where('pessoa_id', $id)->firstOrFail();
+        $result['cpf'] = $result['pessoa']['cpf'];
+        $result['telefone'] = $result['pessoa']['telefone'];
+        $result['apelido'] = $result['pessoa']['apelido'];
+        $result['perfil_id'] = $result['pessoa']['perfil_id'];
+        $result['curso_id'] = $result['pessoa']['curso_id'];
+        $result['nome'] = $result['pessoa']['nome'];
+        return response()->json($result);
+    }
 
     public function show(int $id)
     {

@@ -4,6 +4,7 @@ use App\Http\Controllers\CollegeClassesController;
 use App\Http\Controllers\Configuracao\MenuController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Disciplina\DisciplinaController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Horario\BusinessHoursController;
 use App\Http\Controllers\Horario\DayController;
 use App\Http\Controllers\TimeslotsController;
@@ -38,6 +39,13 @@ Route::post('/register', [PessoaController::class, 'register']);
 Route::get('/cursos', [PessoaController::class, 'cursos']);
 
 Route::middleware('jwt.auth')->group(function () {
+    
+    Route::group([
+        'prefix' => 'home',
+        'controller' => HomeController::class
+    ], function () {
+        Route::get('/', 'index');
+    });
 
     Route::prefix('pessoa')->group(function () {
 
@@ -105,6 +113,7 @@ Route::middleware('jwt.auth')->group(function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
             Route::get('/{id}', 'show')->whereNumber('id');
+            Route::get('/pessoa/{id}', 'showPessoaProfessor')->whereNumber('id');
             Route::put('/{id}', 'update')->whereNumber('id');
             Route::delete('/{id}', 'destroy')->whereNumber('id');
         });
