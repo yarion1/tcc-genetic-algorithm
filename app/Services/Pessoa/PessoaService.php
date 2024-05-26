@@ -35,10 +35,6 @@ class PessoaService extends BaseService
             throw new AppError('Email já cadastrado');
         }
 
-        if (isset($dados['foto']) && gettype($dados['foto']) == 'object') {
-            $dados['foto'] = $this->salvarFotoPerfil($dados['foto'], $dados['cpf']);
-        }
-
         return $inputData;
     }
 
@@ -59,21 +55,12 @@ class PessoaService extends BaseService
             }
         }
         
-        if (isset($inputData['foto'])) {
-            $inputData['foto'] = $this->saveFile(file: $inputData['foto'], folder: 'pessoas/' . $inputData['cpf'], fileName: 'perfil');
-        }
-        
         return $inputData;
     }
 
     function regexNumeros(string $value = null): string
     {
         return preg_replace('/[^0-9]/', '', $value);
-    }
-
-    private function salvarFotoPerfil(mixed $foto, string $cpf)
-    {
-        return $this->saveFile($foto, '/pessoa/' . $this->regexNumeros($cpf), 'perfil.jpg');
     }
 
     public function alterarMeusDados(int $id, array $dados)

@@ -24,8 +24,7 @@ class Pessoa extends BaseModelAuth
         'cpf',
         'senha',
         'apelido',
-        'foto',
-        'fone',
+        'telefone',
         'perfil_id'
     ];
 

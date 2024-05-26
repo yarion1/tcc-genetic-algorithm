@@ -109,14 +109,14 @@ class PessoaController extends Controller
 
     public function alterarDados(Request $request)
     {
+
         $validated = $request->validate([
             'email' => 'required|email:filter',
             'apelido' => 'nullable|string',
-            'fone' => 'nullable',
             'cpf' => 'required',
             'nome' => 'required',
-            'foto' => 'nullable',
-            'numero' => 'nullable',
+            'telefone' => 'nullable',
+            'senha' => 'nullable',
         ]);
 
         $usuario =  Auth::user();

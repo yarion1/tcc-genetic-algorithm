@@ -23,7 +23,6 @@ class PessoaRequest extends FormRequest
             'telefone' => 'nullable',
             'email' => 'required|email',
             'senha' => 'nullable',
-            'foto' => 'nullable'
         ];
     }
 }
