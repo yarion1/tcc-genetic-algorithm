@@ -2,9 +2,11 @@
 
 namespace App\Services\GeneticAlgorithm;
 
+use App\Events\TimetableComplete;
 use App\Events\TimetablesGenerated;
 
 use App\Models\Course;
+use App\Models\ModelFront\Horario;
 use App\Models\Room as RoomModel;
 use App\Models\Timeslot as TimeslotModel;
 use App\Models\Timetable as TimetableModel;
@@ -159,7 +161,7 @@ class TimetableGA
 
             Individual::$partialApplied = false;
 
-            $maxGenerations = 400;
+            $maxGenerations = 1;
 
             $timetable = $this->initializeTimetable();
 
@@ -213,6 +215,7 @@ class TimetableGA
                 'status' => 'COMPLETED'
             ]);
             $horario_id = $this->timetable->horario_id;
+            $description = Horario::find($horario_id)->descricao ?? null;
 
             foreach ($classes as $class) {
                 $groupId = $class->getGroupId();
@@ -240,6 +243,7 @@ class TimetableGA
                 ]);
             }
             Cache::flush();
+            event(new TimetableComplete($horario_id, $description));
             event(new TimetablesGenerated($this->timetable));
         } catch (\Throwable $th) {
             Log::error("Error while generating timetable " . $th->getMessage(), ['trace' => $th->getTrace()]);

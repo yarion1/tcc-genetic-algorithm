@@ -89,28 +89,5 @@ class ProfessorsTableSeeder extends Seeder
             ['id' => 48, 'course_id' => 48, 'professor_id' => 9],
             ['id' => 49, 'course_id' => 49, 'professor_id' => 4]
         ]);
-
-        \DB::table('unavailable_timeslots')->insert([
-            [
-                'professor_id' => 2,
-                'day_id' => 1,
-                'timeslot_id' => 1
-            ],
-            [
-                'professor_id' => 6,
-                'day_id' => 4,
-                'timeslot_id' => 2
-            ],
-            [
-                'professor_id' => 3,
-                'day_id' => 5,
-                'timeslot_id' => 2
-            ],
-            [
-                'professor_id' => 2,
-                'day_id' => 1,
-                'timeslot_id' => 3
-            ]
-        ]);
     }
 }

@@ -19,9 +19,13 @@ class TimetableComplete implements ShouldBroadcast
      */
 
     public $message;
+    public $horario_id;
+    public $description;
 
-    public function __construct()
+    public function __construct($horario_id, $description)
     {
+        $this->horario_id = $horario_id;
+        $this->description = $description;
         $this->message = 'sua grade horária foi gerada com sucesso!';
     }
 
