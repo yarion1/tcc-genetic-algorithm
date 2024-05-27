@@ -5,8 +5,10 @@ namespace App\Services\Horario;
 use App\Models\ModelFront\Evento;
 use App\Models\ModelFront\EventoDia;
 use App\Models\ModelFront\Scopes\ActiveScope;
+use App\Models\Timetable;
 use App\Repositories\Horario\EventoRepository;
 use App\Repositories\Horario\HorarioRepository;
+use App\Repositories\Pessoa\PessoaRepository;
 use App\Services\BaseService;
 use Exception;
 use Illuminate\Support\Facades\App;
@@ -15,11 +17,13 @@ class HorarioService extends BaseService
 {
     protected $repository;
     protected $eventoRepository;
+    protected $pessoaRepository;
 
-    public function __construct(HorarioRepository $repository, EventoRepository $eventoRepository)
+    public function __construct(HorarioRepository $repository, EventoRepository $eventoRepository, PessoaRepository $pessoaRepository)
     {
         $this->repository = $repository;
         $this->eventoRepository = $eventoRepository;
+         $this->pessoaRepository = $pessoaRepository;
     }
 
     public function imprimirHorario(int $id)
@@ -109,14 +113,24 @@ class HorarioService extends BaseService
         }
 
         $resultHorario = $this->repository->create($dados);
+        $coordernador =  $this->pessoaRepository->find()->where('perfil_id', 1)->where('curso_id', 1)->firstOrFail();
 
         if (isset($dados['horario'])) {
             foreach ($dados['horario'] as $key => $horario) {
                 unset($horario['id']);
+                $timetable = Timetable::create([
+                    'user_id' => $coordernador['id'],
+                    'academic_period_id' => 1,
+                    'status' => 'IN PROGRESS',
+                    'name' => $dados['descricao'],
+                    'horario_id' => $resultHorario->id
+                ]);
+
+
                 $this->eventoRepository->create([
                     'horario_id' => $resultHorario->id,
                     'timeslot_id' => $horario['timeslot_id'],
-                    'timetable_id' =>  1,
+                    'timetable_id' =>  $timetable->id,
                     'class_id' => $horario['class_id'],
                     'title' => $horario['title'],
                     'startTime' => $horario['startTime'],

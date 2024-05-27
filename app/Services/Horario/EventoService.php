@@ -5,24 +5,36 @@ namespace App\Services\Horario;
 use App\Repositories\Horario\EventoRepository;
 use App\Services\BaseService;
 use App\Models\CollegeClass;
+use App\Models\Timetable;
+use App\Repositories\Pessoa\PessoaRepository;
 
 class EventoService extends BaseService
 {
     protected $repository;
+    protected $pessoaRepository;
 
-    public function __construct(EventoRepository $repository)
+    public function __construct(EventoRepository $repository, PessoaRepository $pessoaRepository)
     {
         $this->repository = $repository;
+        $this->pessoaRepository = $pessoaRepository;
     }
 
     public function createEventoHorario(mixed $dados)
     {
         // $resultHorarioEvento = $this->horarioEventoRepository->getModel()->where('horario_id', $dados['horario_id'])->where('periodo', $dados['periodo'])->firstOrFail();
-
         $periodoId = CollegeClass::where('period', $dados['periodo'])->first();
+        $coordernador =  $this->pessoaRepository->find()->where('perfil_id', 1)->where('curso_id', 1)->firstOrFail();
+
+        $timetable = Timetable::create([
+            'user_id' => $coordernador['id'],
+            'academic_period_id' => 1,
+            'status' => 'IN PROGRESS',
+            'name' => $dados['descricao'],
+            'horario_id' => (int)$dados['horario_id']
+        ]);
 
         $resultEvento = $this->repository->create([
-            'timetable_id' =>  1,
+            'timetable_id' => $timetable->id,
             'title' => $dados['title'],
             'startTime' => $dados['startTime'],
             'endTime' => $dados['endTime'],
