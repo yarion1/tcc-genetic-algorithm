@@ -161,7 +161,7 @@ class TimetableGA
 
             Individual::$partialApplied = false;
 
-            $maxGenerations = 1;
+            $maxGenerations = 50;
 
             $timetable = $this->initializeTimetable();
 
@@ -172,7 +172,7 @@ class TimetableGA
             $population = $algorithm->initPopulation($timetable, $horario_id);
 
             $algorithm->evaluatePopulation($population, $timetable);
-            // Keep track of current generation
+
             $generation = 1;
 
             while (
@@ -206,7 +206,6 @@ class TimetableGA
             $timetable->createClasses($solution);
             $classes = $timetable->getClasses();
 
-            // Update the timetable data in the DB
             $this->timetable->update([
                 'chromosome' => $solution->getChromosomeString(),
                 'fitness' => $solution->getFitness(),
