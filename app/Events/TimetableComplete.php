@@ -21,9 +21,11 @@ class TimetableComplete implements ShouldBroadcast
     public $message;
     public $horario_id;
     public $description;
+    public $userId;
 
-    public function __construct($horario_id, $description)
+    public function __construct($horario_id, $description, $userId)
     {
+        $this->userId = $userId;
         $this->horario_id = $horario_id;
         $this->description = $description;
         $this->message = 'sua grade horária foi gerada com sucesso!';
@@ -37,7 +39,7 @@ class TimetableComplete implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('channel-name'),
+            new PrivateChannel('private-user.'. $this->userId),
         ];
     }
     public function broadcastAs()
