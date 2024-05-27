@@ -8,13 +8,13 @@ To get started with the application, follow these installation steps:
 2. Clone the repository using the following command:
 
    ```
-   git clone git@github.com:olaysco/timetable-generator.git
+   git@github.com:yarion1/tcc-genetic-algorithm.git
    ```
 
 3. Move into the project directory:
 
    ```
-   cd timetable-generator
+   cd tcc-genetic-algorithm
    ```
 
 4. Install the required dependencies by running:
@@ -32,7 +32,7 @@ To get started with the application, follow these installation steps:
 6. Generate the application key:
 
    ```
-   php artisan key:generate
+   ./vendor/bin/sail artisan key:generate
    ```
 
 7. Create a local database and update the `.env` file with the database credentials.
@@ -40,21 +40,17 @@ To get started with the application, follow these installation steps:
 8. Run the database migration to set up the necessary tables:
 
    ```
-   php artisan migrate
+   ./vendor/bin/sail artisan migrate
    ```
 
 9. Seed the application with initial data:
 
    ```
-   php artisan db:seed
+   ./vendor/bin/sail artisan db:seed
    ```
-
-10. Access the application URL in your web browser. If prompted for a password, use the default password: `admin`.
-
-11. Before generating timetables, configure the Queue driver in the `.env` file. Refer to the Laravel documentation on queues for more information: https://laravel.com/docs/10.x/queues#database. Using the `sync` driver will not work due to the time-consuming nature of the Genetic Algorithm.
-
-12. Start the queue to enable timetable generation:
+   
+10. Start the queue to enable timetable generation:
 
     ```
-    php artisan queue:listen --timeout=0
+    php artisan queue:work 
     ```
