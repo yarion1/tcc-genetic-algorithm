@@ -18,21 +18,11 @@ class TimetablesController extends Controller
 
     protected TimetableService $service;
 
-    /**
-     * Create a new instance of this controller and set up
-     * middlewares on this controller methods
-     */
     public function __construct(TimetableService $service)
     {
         $this->service = $service;
-//        $this->middleware('jwt.auth');
     }
 
-    /**
-     * Handle ajax request to load timetable to populate
-     * timetables table on dashboard
-     *
-     */
     public function index()
     {
         $timetables = Timetable::orderBy('created_at', 'DESC')->paginate(10);
@@ -40,12 +30,6 @@ class TimetablesController extends Controller
         return view('dashboard.timetables', compact('timetables'));
     }
 
-    /**
-     * Create a new timetable object and hand over to genetic algorithm
-     * to generate
-     *
-     * @param \Illuminate\Http\Request $request The HTTP request
-     */
     public function store(Request $request)
     {
         $rules = [
