@@ -22,7 +22,7 @@ class EventoService extends BaseService
         $periodoId = CollegeClass::where('period', $dados['periodo'])->first();
 
         $resultEvento = $this->repository->create([
-            'timetable_id' =>  85,
+            'timetable_id' =>  1,
             'title' => $dados['title'],
             'startTime' => $dados['startTime'],
             'endTime' => $dados['endTime'],
