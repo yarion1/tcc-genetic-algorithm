@@ -80,4 +80,10 @@ class HorarioController extends Controller
        $result =  $this->service->ativarVersao($id, $request['versao_atual']);  
        return $result;
     }
+
+    public function updateGeracao(Request $request, int $id)
+    {
+       $request = $request->all();
+       $this->service->updateGeracao($id, $request['gerando']);  
+    }
 }

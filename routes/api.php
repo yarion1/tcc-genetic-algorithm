@@ -158,6 +158,7 @@ Route::middleware('jwt.auth')->group(function () {
             Route::post('/{id}/imprimir', 'imprimir')->whereNumber('id');
             Route::post('/{id}/criar-copia', 'criarCopia')->whereNumber('id');
             Route::put('/ativar-versao/{id}', 'ativarVersao')->whereNumber('id');
+            Route::put('/gerando/{id}', 'updateGeracao')->whereNumber('id');
         });
         Route::prefix('restricao')->group(function () {
 

@@ -152,6 +152,14 @@ class HorarioService extends BaseService
         return response()->json(['message' => $message, 'result' => $result]);
     }
 
+    public function updateGeracao(int $id, bool $gerando)
+    {
+        $result = $this->repository->find()->findOrFail($id);
+
+        $result->gerando = $gerando;
+        $result->update();
+    }
+
     public function criarCopia(int $id)
     {
         $horarioAtual = $this->repository->find(with: ['horario'])->findOrFail($id);
