@@ -162,7 +162,7 @@ class TimetableGA
 
             Individual::$partialApplied = false;
 
-            $maxGenerations = 1;
+            $maxGenerations = 400;
 
             $timetable = $this->initializeTimetable();
 

@@ -644,10 +644,6 @@ class Timetable
         return $clashes;
     }
 
-    /**
-     * Determine whether a given set of numbers are
-     * consecutive
-     */
     public function areConsecutive($numbers)
     {
         sort($numbers);
