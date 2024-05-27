@@ -26,15 +26,11 @@ class CreateTimetablesTable extends Migration
             $table->decimal('fitness', 8, 6)->nullable();
             $table->integer('generations')->unsigned()->nullable();
             $table->integer('violated_constraints')->unsigned()->nullable();
-            $table->integer('user_id')->unsigned();
+            
+            $table->foreignId('user_id')->constrained('pessoas')->onDelete('cascade');
+            
             $table->integer('academic_period_id')->unsigned();
             $table->timestamps();
-
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
-
             $table->foreign('academic_period_id')
                 ->references('id')
                 ->on('academic_periods')

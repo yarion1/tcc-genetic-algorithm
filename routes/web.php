@@ -10,7 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/horario', function () {
+    $pdf = App::make('dompdf.wrapper');
+    return $pdf->loadView('templateHorario.horario')->stream('horario.pdf');
+});
+ 
 Route::get('/', function() {
     return redirect('/dashboard');
 });

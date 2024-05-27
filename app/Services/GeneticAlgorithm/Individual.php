@@ -1,6 +1,8 @@
 <?php
 namespace App\Services\GeneticAlgorithm;
 
+use App\Models\ProfessorSchedule;
+
 class Individual
 {
     /**
@@ -18,17 +20,35 @@ class Individual
      */
     private $fitness;
 
+    public static $partialApplied = false;
 
     /**
      * Create a new individual from a timetable
      *
      * @var Timetable The timetable
      */
-    public function __construct($timetable = null)
+    public function __construct($timetable = null, $horario_id = null)
     {
-        if ($timetable) {
-            $newChromosome = [];
 
+        if ($timetable) {
+
+            if (!self::$partialApplied) {
+
+                $courseIds = [];
+
+                $partial = ProfessorSchedule::query()->select(['course_id', 'day_id', 'timeslot_id', 'room_id', 'professor_id'])->where('horario_id', $horario_id)->get();
+                if($partial->isNotEmpty()){
+                    foreach ($partial as $courseId){
+                        $courseIds[$courseId->course_id] = $courseId;
+                    }
+                }
+                ProfessorSchedule::where('horario_id', $horario_id)->delete();
+                self::$partialApplied = true;
+            } else {
+                $partial = collect();
+            }
+
+            $newChromosome = [];
             $chromosomeIndex = 0;
 
             foreach ($timetable->getGroups() as $group) {
@@ -37,25 +57,44 @@ class Individual
                     //print "\nOn Module " . $module->getModuleCode() . "\n";
 
                     for ($i = 1; $i <= $module->getSlots($group->getId()); $i++) {
-                        // Add random time slot
-                        $timeslotId = $timetable->getRandomTimeslot()->getId();
-                        $newChromosome[$chromosomeIndex] = $timeslotId;
-                        $chromosomeIndex++;
 
-                        // Add random room
-                        $roomId = $timetable->getRandomRoom()->getId();
-                        $newChromosome[$chromosomeIndex] = $roomId;
-                        $chromosomeIndex++;
+                        if ($partial->isNotEmpty()  && isset($courseIds[$moduleId])) {
+                            $schedule = $courseIds[$moduleId];
+                            $timeslotId = 'D' . $schedule->day_id . 'T' . $schedule->timeslot_id;
 
-                        // Add random professor
-                        $professor = $module->getRandomProfessorId();
-                        $newChromosome[$chromosomeIndex] = $professor;
-                        $chromosomeIndex++;
+                            $newChromosome[$chromosomeIndex] = $timeslotId;
+                            $chromosomeIndex++;
+
+                            $roomId = $schedule->room_id;
+                            $newChromosome[$chromosomeIndex] = $roomId;
+                            $chromosomeIndex++;
+
+                            $professor = $schedule->professor_id;
+                            $newChromosome[$chromosomeIndex] = $professor;
+                            $chromosomeIndex++;
+
+                        } else {
+                            // Add random time slot
+                            $timeslotId = $timetable->getRandomTimeslot()->getId();
+                            $newChromosome[$chromosomeIndex] = $timeslotId;
+                            $chromosomeIndex++;
+
+                            // Add random room
+                            $roomId = $timetable->getRandomRoom()->getId();
+                            $newChromosome[$chromosomeIndex] = $roomId;
+                            $chromosomeIndex++;
+
+                            // Add random professor
+                            $professor = $module->getRandomProfessorId();
+                            $newChromosome[$chromosomeIndex] = $professor;
+                            $chromosomeIndex++;
+                        }
 
                         $module->increaseAllocatedSlots();
                         $timeslot = $timetable->getTimeslot($timeslotId);
 
                         $timeslotId = $timeslot->getNext();
+
                         while (($i + 1) <= $timetable->maxContinuousSlots && ($module->getSlots() != $module->getAllocatedSlots()) && ($timeslotId > -1)) {
                             $newChromosome[$chromosomeIndex] = $timeslotId;
                             $chromosomeIndex++;
@@ -134,7 +173,7 @@ class Individual
     /**
      * Get the gene at the specified location
      *
-     * @param $index The location to get the gene at
+     * @param int $index The location to get the gene at
      * @return int The bit representing the gene at that location
      */
     public function getGene($index)

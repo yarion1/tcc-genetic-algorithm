@@ -56,4 +56,9 @@ class Professor
     {
         return $this->occupiedSlots;
     }
+
+    public function getSubstitute()
+    {
+        return $this->professorModel->substitute;
+    }
 }

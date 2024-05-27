@@ -3,6 +3,9 @@
 namespace App\Models;
 
 
+use App\Models\ModelFront\Horario;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class ProfessorSchedule extends Model
 {
     /**
@@ -18,7 +21,7 @@ class ProfessorSchedule extends Model
     /**
      * Relations for this model
      */
-    protected $relations = ['timetable', 'professor', 'course', 'day', 'timeslot', 'room', 'college_class'];
+    protected $relations = ['timetable', 'professor', 'course', 'day', 'timeslot', 'room', 'college_class', 'horario'];
 
     /**
      * Timetable for this schedule
@@ -75,5 +78,9 @@ class ProfessorSchedule extends Model
     public function college_class()
     {
         return $this->belongsTo(CollegeClass::class, 'class_id');
+    }
+    public function horario(): BelongsTo
+    {
+        return $this->belongsTo(Horario::class, 'horario_id');
     }
 }

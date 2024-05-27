@@ -6,6 +6,7 @@
                 <tr class="table-head">
                     <th style="width: 50%">Name</th>
                     <th style="width: 40%">Capacity</th>
+                    <th style="width: 20%">Unavailable Rooms</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -15,6 +16,17 @@
                 <tr>
                     <td>{{ $room->name }}</td>
                     <td>{{ $room->capacity }}</td>
+                    <td>
+                        @if (count($room->unavailable_rooms))
+                            <ul>
+                                @foreach ($room->unavailable_rooms as $period)
+                                    <li>{{ $period->day->name . " " . $period->timeslot->time }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p>No unavailable periods</p>
+                        @endif
+                    </td>
                     <td>
                     <button class="btn btn-primary btn-sm resource-update-btn" data-id="{{ $room->id }}"><i class="fa fa-pencil"></i></button>
                     <button class="btn btn-danger btn-sm resource-delete-btn" data-id="{{ $room->id }}"><i class="fa fa-trash-o"></i></button></td>

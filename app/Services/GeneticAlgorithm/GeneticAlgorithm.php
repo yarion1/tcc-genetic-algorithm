@@ -74,12 +74,13 @@ class GeneticAlgorithm
      *
      * @param Timetable $timetable Timetable for generating individuals
      */
-    public function initPopulation($timetable)
+    public function initPopulation($timetable, $horario_id)
     {
-        $population = new Population($this->populationSize, $timetable);
+        $population = new Population($this->populationSize, $timetable, $horario_id);
 
         return $population;
     }
+
 
     /**
      * Get the temperature

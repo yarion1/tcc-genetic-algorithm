@@ -26,8 +26,8 @@ class TimeslotsController extends Controller
      */
     public function __construct(TimeslotsService $service)
     {
-        $this->middleware('auth');
-        $this->middleware('activated');
+//        $this->middleware('auth');
+//        $this->middleware('activated');
         $this->service = $service;
     }
 
@@ -51,6 +51,15 @@ class TimeslotsController extends Controller
 
         return view('timeslots.index', compact('timeslots'));
     }
+
+    public function selects(Request $request) {
+        $timeslots = $this->service->all([
+            'order_by' => 'rank',
+        ]);
+
+        return response()->json($timeslots);
+    }
+
 
     /**
      * Add a new timeslot

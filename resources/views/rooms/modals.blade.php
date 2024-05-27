@@ -30,6 +30,23 @@
                                 <label>Capacity</label>
                                 <input type="number" name="capacity" class="form-control">
                             </div>
+
+                            <div class="form-group">
+                                <label>Unavailable periods</label>
+
+                                <div class="select2-wrapper">
+                                    <select id="periods-select" name="unavailable_rooms[]" class="form-control select2" multiple>
+                                        <option value="">Select unavailable periods for this room</option>
+                                        @foreach ($days as $day)
+                                            @foreach ($timeslots as $timeslot)
+                                                <option value="{{ $day->id  }},{{ $timeslot->id }}">
+                                                    {{ $day->name . " " . $timeslot->time }}
+                                                </option>
+                                            @endforeach
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

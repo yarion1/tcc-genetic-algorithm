@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Response;
-use Illuminate\Http\Request;
-use App\Services\ProfessorsService;
-
-use App\Models\Day;
 use App\Models\Course;
-use App\Models\Timeslot;
+use App\Models\Day;
 use App\Models\Professor;
-use App\Models\UnavailableTimeslot;
+use App\Models\Timeslot;
+use App\Services\ProfessorsService;
+use Illuminate\Http\Request;
+use Response;
 
 class ProfessorsController extends Controller
 {
@@ -30,8 +28,8 @@ class ProfessorsController extends Controller
     public function __construct(ProfessorsService $service)
     {
         $this->service = $service;
-        $this->middleware('auth');
-        $this->middleware('activated');
+//        $this->middleware('auth');
+//        $this->middleware('activated');
     }
 
     /**

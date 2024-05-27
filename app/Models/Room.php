@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\ModelFront\TiposSalas;
+
 class Room extends Model
 {
     /**
@@ -27,5 +29,15 @@ class Room extends Model
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'favourite_rooms', 'room_id', 'course_id');
+    }
+
+    public function unavailable_rooms()
+    {
+        return $this->hasMany(UnavailableRooms::class, 'room_id');
+    }
+
+    public function tipoSala()
+    {
+        return $this->belongsTo(TiposSalas::class);
     }
 }

@@ -23,8 +23,8 @@ class CollegeClassesController extends Controller
     public function __construct(CollegeClassesService $service)
     {
         $this->service = $service;
-        $this->middleware('auth');
-        $this->middleware('activated');
+//        $this->middleware('auth');
+//        $this->middleware('activated');
     }
 
     /**
@@ -49,11 +49,18 @@ class CollegeClassesController extends Controller
 
 
         if ($request->ajax()) {
+
             return view('classes.table', compact('classes', 'academicPeriods'));
         }
 
         return view('classes.index', compact('classes', 'rooms', 'courses', 'academicPeriods'));
     }
+
+    public function indexPeriodos()
+    {
+        return response()->json($this->service->all());
+    }
+
 
     /**
      * Add a new class to the database

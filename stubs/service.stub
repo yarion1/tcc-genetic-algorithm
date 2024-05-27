@@ -1,0 +1,14 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+use App\Services\BaseService;
+
+class $CLASS$ extends BaseService
+{
+    protected $repository;
+
+    public function __construct(BaseRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+}

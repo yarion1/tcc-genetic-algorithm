@@ -54,7 +54,7 @@ class CollegeClassesService extends AbstractService
             return null;
         }
 
-        $class->unavailable_rooms()->sync($data['unavailable_rooms']);
+//        $class->unavailable_rooms()->sync($data['unavailable_rooms']);
         $class->courses()->sync($data['courses']);
 
         return $class;
@@ -75,9 +75,9 @@ class CollegeClassesService extends AbstractService
 
         $roomIds = [];
 
-        foreach ($class->unavailable_rooms as $room) {
-            $roomIds[] = $room->id;
-        }
+//        foreach ($class->unavailable_rooms as $room) {
+//            $roomIds[] = $room->id;
+//        }
 
         $class->room_ids = $roomIds;
 
@@ -103,15 +103,15 @@ class CollegeClassesService extends AbstractService
             'size' => $data['size']
         ]);
 
-        if (!isset($data['unavailable_rooms'])) {
-            $data['unavailable_rooms'] = [];
-        }
+//        if (!isset($data['unavailable_rooms'])) {
+//            $data['unavailable_rooms'] = [];
+//        }
 
         if (!isset($data['courses'])) {
             $data['courses'] = [];
         }
 
-        $class->unavailable_rooms()->sync($data['unavailable_rooms']);
+//        $class->unavailable_rooms()->sync($data['unavailable_rooms']);
         $class->courses()->sync($data['courses']);
 
         return $class;

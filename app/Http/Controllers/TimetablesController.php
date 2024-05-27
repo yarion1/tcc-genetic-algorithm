@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\GeneticAlgorithm\TimetableGA;
 use Illuminate\Http\Request;
 use App\Services\TimetableService;
 use App\Events\TimetablesRequested;
@@ -17,22 +18,11 @@ class TimetablesController extends Controller
 
     protected TimetableService $service;
 
-    /**
-     * Create a new instance of this controller and set up
-     * middlewares on this controller methods
-     */
     public function __construct(TimetableService $service)
     {
         $this->service = $service;
-        $this->middleware('auth');
-        $this->middleware('activated');
     }
 
-    /**
-     * Handle ajax request to load timetable to populate
-     * timetables table on dashboard
-     *
-     */
     public function index()
     {
         $timetables = Timetable::orderBy('created_at', 'DESC')->paginate(10);
@@ -40,21 +30,17 @@ class TimetablesController extends Controller
         return view('dashboard.timetables', compact('timetables'));
     }
 
-    /**
-     * Create a new timetable object and hand over to genetic algorithm
-     * to generate
-     *
-     * @param \Illuminate\Http\Request $request The HTTP request
-     */
     public function store(Request $request)
     {
         $rules = [
             'name' => 'required',
-            'academic_period_id' => 'required'
+            'academic_period_id' => 'required',
+            'horario_id' => 'required'
         ];
 
         $messages = [
-            'academic_period_id.required' => 'An academic period must be selected'
+            'academic_period_id.required' => 'An academic period must be selected',
+            'horario_id.required' => 'horario_id is required'
         ];
 
         $this->validate($request, $rules, $messages);
@@ -84,11 +70,12 @@ class TimetablesController extends Controller
             return response()->json(['errors' => $otherChecks], 422);
         }
 
-        $timetable = Timetable::create([
+        $timetable = Timetable::where('horario_id', $request->horario_id)->first() ?? Timetable::create([
             'user_id' => Auth::user()->id,
             'academic_period_id' => $request->academic_period_id,
             'status' => 'IN PROGRESS',
-            'name' => $request->name
+            'name' => $request->name,
+            'horario_id' => $request->horario_id
         ]);
 
         if ($timetable) {
@@ -100,11 +87,6 @@ class TimetablesController extends Controller
         return response()->json(['message' => 'Timetables are being generated.Check back later'], 200);
     }
 
-    /**
-     * Display a printable view of timetable set
-     *
-     * @param int $id
-     */
     public function view($id)
     {
         $timetable = Timetable::find($id);

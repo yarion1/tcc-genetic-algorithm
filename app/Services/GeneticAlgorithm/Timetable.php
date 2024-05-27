@@ -1,8 +1,12 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Services\GeneticAlgorithm;
 
 use App\Models\Day;
+use App\Models\ModelFront\RestricaoGrupoDisciplina;
+use App\Models\ModelFront\RestricaoGrupoEvento;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class Timetable
 {
@@ -121,16 +125,16 @@ class Timetable
      *
      * @param int $roomId ID of room
      */
-    public function addRoom($roomId)
+    public function addRoom($roomId, $unavailableSlots)
     {
-        $this->rooms[$roomId] = new Room($roomId);
+        $this->rooms[$roomId] = new Room($roomId, $unavailableSlots);
     }
 
     /**
      * Add a professor
      *
      * @param int $professorId Id of professor
-     * @param string $unavailableSlots Slots that the professor can't teach
+     * @param array $unavailableSlots Slots that the professor can't teach
      */
     public function addProfessor($professorId, $unavailableSlots)
     {
@@ -187,7 +191,6 @@ class Timetable
 
         foreach ($this->groups as $id => $group) {
             $moduleIds = $group->getModuleIds();
-
             foreach ($moduleIds as $moduleId) {
                 $module = $this->getModule($moduleId);
 
@@ -399,38 +402,189 @@ class Timetable
      */
     public function calcClashes()
     {
+        $par = Cache::rememberForever('par_restrictions', function () {
+            return DB::table('restricao_grupo_eventos')
+                ->select('classificacao_id', 'startTime', 'endTime', 'daysOfWeek', 'restricao_grupo_id')
+                ->where(["ativo" => 1, "tipo_restricao_id" => 4])
+                ->get();
+        });
+
+        $parCodes = [];
+        $resPar;
+        if($par->isNotEmpty()){
+            foreach ($par as $parCode) {
+                $item = $parCode->restricao_grupo_id . $parCode->daysOfWeek . $parCode->startTime . $parCode->endTime;
+                $parCodes[$item] = $parCode;
+                $resPar = $parCode->classificacao_id;
+            }
+        }
+
+        $impar = Cache::rememberForever('impar_restrictions', function () {
+            return DB::table('restricao_grupo_eventos')
+                ->select(['classificacao_id', 'startTime', 'endTime', 'daysOfWeek', 'restricao_grupo_id'])
+                ->where(["ativo" => 1, "tipo_restricao_id" => 5])
+                ->get();
+        });
+
+        $imparCodes = [];
+        $resImpar;
+        if($impar->isNotEmpty()){
+            foreach ($impar as $imparCode) {
+                $item = $imparCode->restricao_grupo_id . $imparCode->daysOfWeek . $imparCode->startTime . $imparCode->endTime;
+                $imparCodes[$item] = $imparCode;
+                $resImpar = $imparCode->classificacao_id;
+            }
+        }
+
+        $substitute = Cache::rememberForever('substitute_restrictions', function () {
+            return DB::table('restricao_grupo_eventos')
+                ->select(['classificacao_id', 'startTime', 'endTime', 'daysOfWeek', 'restricao_grupo_id'])
+                ->where(["ativo" => 1, "tipo_restricao_id" => 7])
+                ->get();
+        });
+
+        $substituteCodes = [];
+        $resSubs;
+        if($substitute->isNotEmpty()){
+            foreach ($substitute as $subsCode) {
+                $item = $subsCode->restricao_grupo_id . $subsCode->daysOfWeek . $subsCode->startTime . $subsCode->endTime;
+                $substituteCodes[$item] = $subsCode;
+                $resSubs = $subsCode->classificacao_id;
+            }
+        }
+
+        $alocationCourse = Cache::rememberForever('alocation_restrictions', function () {
+            return DB::table('restricao_grupo_eventos')
+                ->select(['classificacao_id', 'startTime', 'endTime', 'daysOfWeek', 'restricao_grupo_id'])
+                ->where(["ativo" => 1, "tipo_restricao_id" => 6])
+                ->get();
+        });
+
+        $alocationCodes = [];
+        $resAlocation = null;
+        if($alocationCourse->isNotEmpty()){
+            foreach ($alocationCourse as $alocationCode) {
+                $item = $alocationCode->restricao_grupo_id . $alocationCode->daysOfWeek . $alocationCode->startTime . $alocationCode->endTime;
+                $alocationCodes[$item] = $alocationCode;
+                $resAlocation = $alocationCode->classificacao_id;
+            }
+        }
+
+        $exceptionCourses = Cache::rememberForever('exception_restrictions', function () {
+            return DB::table('restricao_grupo_disciplinas')
+                ->select('disciplina_id')
+                ->where("ativo", 1)
+                ->get()
+                ->keyBy('disciplina_id');
+        });
+
+        $hard = 10;
+        $soft = 4;
+        $really = 1;
         $clashes = 0;
         $days = Day::all();
 
         foreach ($this->classes as $id => $classA) {
+
             $roomCapacity = $this->getRoom($classA->getRoomId())->getCapacity();
+            $roomAvailable = $this->getRoom($classA->getRoomId())->getOccupiedSlots();
             $groupSize = $this->getGroup($classA->getGroupId())->getSize();
             $professor = $this->getProfessor($classA->getProfessorId());
             $timeslot = $this->getTimeslot($classA->getTimeslotId());
+            $startTime = $timeslot->getStartTime();
+            $endTime = $timeslot->getEndTime();
+            $dayId = $timeslot->getDaysOfWeek();
+            $period = $classA->getPeriod();
+            $courseSize = $classA->getSize();
             $module = $this->getModule($classA->getModuleId());
+            $timeslotId = $timeslot->getTimeslotId();
+            $moduleId = $classA->getModuleId();
+            $strRes = $period . $dayId . $startTime . $endTime;
 
-            if ($roomCapacity < $groupSize) {
-                $clashes++;
+            if ($par->isNotEmpty() && $this->isPeriodEven($period)){
+                $aux = isset($parCodes[$strRes]);
+                if (!$aux) {
+                    if ($resPar == 1) {
+                        $clashes += $hard;
+                    }
+                    if ($resPar == 2) {
+                        $clashes += $soft;
+                    }
+                    if ($resPar == 3) {
+                        $clashes += $really;
+                    }
+                }
+            }
+
+            if ($impar->isNotEmpty() && !$this->isPeriodEven($period)){
+                $aux = isset($imparCodes[$strRes]);
+                if (!$aux) {
+                    if ($resImpar == 1) {
+                        $clashes += $hard;
+                    }
+                    if ($resImpar == 2) {
+                        $clashes += $soft;
+                    }
+                    if ($resImpar == 3) {
+                        $clashes += $really;
+                    }
+                }
+            }
+
+            if ($substitute->isNotEmpty() && $professor->getSubstitute() == 1) {
+                $aux = isset($substituteCodes[$strRes]);
+                if (!$aux) {
+                    if ($resSubs == 1) {
+                        $clashes += $hard;
+                    }
+                    if ($resSubs == 2) {
+                        $clashes += $soft;
+                    }
+                    if ($resSubs == 3) {
+                        $clashes += $really;
+                    }
+                }
+            }
+
+            if ($exceptionCourses->isNotEmpty() && isset($exceptionCourses[$moduleId])) {
+                if (!isset($alocationCodes[$strRes])) {
+                    if ($resAlocation == 1) {
+                        $clashes += $hard;
+                    }
+                    if ($resAlocation == 2) {
+                        $clashes += $soft;
+                    }
+                    if ($resAlocation == 3) {
+                        $clashes += $really;
+                    }
+                }
+            }
+
+            if ($exceptionCourses->isEmpty() && $timeslotId == 3 || !isset($exceptionCourses[$moduleId]) && $timeslotId == 3) {
+                $clashes += $hard;
+            }
+
+            if ($roomCapacity < $courseSize) {
+                $clashes += $hard;
             }
 
             // Check if we don't have any lecturer forced to teach at his occupied time
             if (in_array($timeslot->getId(), $professor->getOccupiedSlots())) {
-                $clashes++;
+                $clashes += $really;
+            }
+
+            if (in_array($timeslot->getId(), $roomAvailable)) {
+                $clashes += $hard;
             }
 
             // Check if room is taken
             foreach ($this->classes as $id => $classB) {
                 if ($classA->getId() != $classB->getId()) {
                     if (($classA->getRoomId() == $classB->getRoomId()) && ($classA->getTimeslotId() == $classB->getTimeslotId())) {
-                        $clashes++;
+                        $clashes += $hard;
                         break;
                     }
                 }
-            }
-
-
-            if (in_array($classA->getRoomId(), $this->getGroup($classA->getGroupId())->getUnavailableRooms())) {
-                $clashes++;
             }
 
             // Check if professor is available
@@ -439,7 +593,7 @@ class Timetable
                     if (($classA->getProfessorId() == $classB->getProfessorId())
                         && ($classA->getTimeslotId() == $classB->getTimeslotId())
                     ) {
-                        $clashes++;
+                        $clashes += $hard;
                         break;
                     }
                 }
@@ -449,7 +603,7 @@ class Timetable
             foreach ($this->classes as $id => $classB) {
                 if ($classA->getId() != $classB->getId()) {
                     if (($classA->getGroupId() == $classB->getGroupId()) && ($classA->getTimeslotId() == $classB->getTimeslotId())) {
-                        $clashes++;
+                        $clashes += $hard;
                         break;
                     }
                 }
@@ -470,7 +624,7 @@ class Timetable
                         foreach ($classes as $classB) {
                             if ($classA->getModuleId() == $classB->getModuleId()) {
                                 if ($classA->getRoomId() != $classB->getRoomId()) {
-                                    $clashes++;
+                                     $clashes += $hard;
                                 }
 
                                 $moduleTimeslots[] = $classB->getTimeslotId();
@@ -478,7 +632,7 @@ class Timetable
                         }
 
                         if (!$this->areConsecutive($moduleTimeslots)) {
-                            $clashes++;
+                            $clashes += $hard;
                         }
 
                         $checkedModules[] = $classA->getModuleId();
@@ -490,10 +644,6 @@ class Timetable
         return $clashes;
     }
 
-    /**
-     * Determine whether a given set of numbers are
-     * consecutive
-     */
     public function areConsecutive($numbers)
     {
         sort($numbers);
@@ -509,4 +659,10 @@ class Timetable
 
         return true;
     }
+
+    public function isPeriodEven($period)
+    {
+        return $period % 2 == 0;
+    }
+
 }

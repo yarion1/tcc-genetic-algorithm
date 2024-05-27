@@ -7,7 +7,7 @@
                     <th style="width: 30%">Name</th>
                     <th style="width: 10%">Size</th>
                     <th style="width: 30%">Courses</th>
-                    <th style="width: 20%">Unavailable Rooms</th>
+{{--                    <th style="width: 20%">Unavailable Rooms</th>--}}
                     <th style="width: 10%">Actions</th>
                 </tr>
             </thead>
@@ -32,17 +32,17 @@
                             @endif
                         @endforeach
                     </td>
-                    <td>
-                        @if (count($class->unavailable_rooms))
-                        <ul>
-                            @foreach ($class->unavailable_rooms as $room)
-                                <li>{{ $room->name }}</li>
-                            @endforeach
-                        </ul>
-                        @else
-                        None specified
-                        @endif
-                    </td>
+{{--                    <td>--}}
+{{--                        @if (count($class->unavailable_rooms))--}}
+{{--                        <ul>--}}
+{{--                            @foreach ($class->unavailable_rooms as $room)--}}
+{{--                                <li>{{ $room->name }}</li>--}}
+{{--                            @endforeach--}}
+{{--                        </ul>--}}
+{{--                        @else--}}
+{{--                        None specified--}}
+{{--                        @endif--}}
+{{--                    </td>--}}
                     <td>
                     <button class="btn btn-primary btn-sm resource-update-btn" data-id="{{ $class->id }}"><i class="fa fa-pencil"></i></button>
                     <button class="btn btn-danger btn-sm resource-delete-btn" data-id="{{ $class->id }}"><i class="fa fa-trash-o"></i></button></td>

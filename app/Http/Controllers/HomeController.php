@@ -2,27 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\HomeService;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    protected $service;
+
+    public function __construct(HomeService $service)
     {
-        $this->middleware('auth');
+        $this->service = $service;
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view('home');
+        return response()->json($this->service->getDados());
     }
 }

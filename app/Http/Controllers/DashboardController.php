@@ -18,8 +18,8 @@ class DashboardController extends Controller
     public function __construct(DashboardService $service)
     {
         $this->service = $service;
-        $this->middleware('auth');
-        $this->middleware('activated');
+//        $this->middleware('auth');
+//        $this->middleware('activated');
     }
 
     /**

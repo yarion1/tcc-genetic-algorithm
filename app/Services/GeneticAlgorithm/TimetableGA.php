@@ -2,14 +2,18 @@
 
 namespace App\Services\GeneticAlgorithm;
 
+use App\Events\TimetableComplete;
 use App\Events\TimetablesGenerated;
 
 use App\Models\Course;
+use App\Models\ModelFront\Horario;
 use App\Models\Room as RoomModel;
 use App\Models\Timeslot as TimeslotModel;
 use App\Models\Timetable as TimetableModel;
 use App\Models\Professor as ProfessorModel;
 use App\Models\CollegeClass as CollegeClassModel;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -46,7 +50,12 @@ class TimetableGA
         $rooms = RoomModel::all();
 
         foreach ($rooms as $room) {
-            $timetable->addRoom($room->id);
+            $unavailableSlotIds = [];
+
+            foreach ($room->unavailable_rooms as $timeslot) {
+                $unavailableSlotIds[] = 'D' . $timeslot->day_id . 'T' . $timeslot->timeslot_id;
+            }
+            $timetable->addRoom($room->id, $unavailableSlotIds);
         }
 
         // Set up timeslots
@@ -113,7 +122,6 @@ class TimetableGA
             $timetable->addGroup($class->id, $courseIds);
         }
 
-
         return $timetable;
     }
 
@@ -151,16 +159,21 @@ class TimetableGA
     public function run()
     {
         try {
-            $maxGenerations = 1500;
+
+            Individual::$partialApplied = false;
+
+            $maxGenerations = 400;
 
             $timetable = $this->initializeTimetable();
 
-            $algorithm = new GeneticAlgorithm(100, 0.01, 0.9, 2, 10);
+            $algorithm = new GeneticAlgorithm(150, 0.01, 0.9, 2, 10);
 
-            $population = $algorithm->initPopulation($timetable);
+            $horario_id = $this->timetable->horario_id;
+
+            $population = $algorithm->initPopulation($timetable, $horario_id);
 
             $algorithm->evaluatePopulation($population, $timetable);
-            // Keep track of current generation
+
             $generation = 1;
 
             while (
@@ -194,7 +207,6 @@ class TimetableGA
             $timetable->createClasses($solution);
             $classes = $timetable->getClasses();
 
-            // Update the timetable data in the DB
             $this->timetable->update([
                 'chromosome' => $solution->getChromosomeString(),
                 'fitness' => $solution->getFitness(),
@@ -202,8 +214,9 @@ class TimetableGA
                 'scheme' => $scheme,
                 'status' => 'COMPLETED'
             ]);
+            $horario_id = $this->timetable->horario_id;
+            $description = Horario::find($horario_id)->descricao ?? null;
 
-            // Save scheduled classes' information for professors
             foreach ($classes as $class) {
                 $groupId = $class->getGroupId();
                 $timeslot = $timetable->getTimeslot($class->getTimeslotId());
@@ -212,6 +225,9 @@ class TimetableGA
                 $professorId = $class->getProfessorId();
                 $moduleId = $class->getModuleId();
                 $roomId = $class->getRoomId();
+                $startTime = $timeslot->getStartTime();
+                $endTime = $timeslot->getEndTime();
+                $title = $class->getTitle();
 
                 $this->timetable->schedules()->create([
                     'day_id' => $dayId,
@@ -219,9 +235,15 @@ class TimetableGA
                     'professor_id' => $professorId,
                     'course_id' => $moduleId,
                     'class_id' => $groupId,
-                    'room_id' => $roomId
+                    'room_id' => $roomId,
+                    'horario_id' => $horario_id,
+                    'startTime' => $startTime,
+                    'endTime' => $endTime,
+                    'title' => "Aula de ".$title,
                 ]);
             }
+            Cache::flush();
+            event(new TimetableComplete($horario_id, $description, $this->timetable->user_id ));
             event(new TimetablesGenerated($this->timetable));
         } catch (\Throwable $th) {
             Log::error("Error while generating timetable " . $th->getMessage(), ['trace' => $th->getTrace()]);
