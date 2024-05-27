@@ -152,6 +152,7 @@ Route::middleware('jwt.auth')->group(function () {
 
         Route::prefix('notificacao')->group(function () {
             Route::controller(NotificacaoHorarioController::class)->group(function () {
+                Route::get('/', 'index');
                 Route::post('/', 'store');
                 Route::delete('/{id}', 'destroy')->whereNumber('id');
             });

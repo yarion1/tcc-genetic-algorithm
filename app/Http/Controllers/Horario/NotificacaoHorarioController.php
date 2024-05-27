@@ -17,7 +17,7 @@ class NotificacaoHorarioController extends Controller
 
     public function index()
     {
-        return response()->json($this->service->find()->get());
+        return response()->json($this->service->find()->where('criado_por', auth()->user()->id)->get());
     }
 
 
