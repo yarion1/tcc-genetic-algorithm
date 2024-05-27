@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
             // DiaSemanaSeeder::class,
              //TipoRestricaoSeeder::class,
             // RestricaoSeed::class,
+            TimetableTableSeeder::class,
             MenuSeeder::class,
             MenuPerfilSeeder::class
         ]);
