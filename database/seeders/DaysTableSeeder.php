@@ -49,12 +49,6 @@ class DaysTableSeeder extends Seeder
                 'short_name' => 'Sat',
                 'daysOfWeek' => 6,
             ],
-            [
-                'id' => 7,
-                'name' => 'Domingo',
-                'short_name' => 'Sun',
-                'daysOfWeek' => 8,
-            ]
         ];
 
         foreach ($days as $day) {
