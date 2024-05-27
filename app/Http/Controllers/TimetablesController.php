@@ -70,7 +70,7 @@ class TimetablesController extends Controller
             return response()->json(['errors' => $otherChecks], 422);
         }
 
-        $timetable = Timetable::create([
+        $timetable = Timetable::where('horario_id', $request->horario_id)->first() ?? Timetable::create([
             'user_id' => Auth::user()->id,
             'academic_period_id' => $request->academic_period_id,
             'status' => 'IN PROGRESS',
