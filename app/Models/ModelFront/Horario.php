@@ -26,6 +26,13 @@ class Horario extends BaseModel
 
     public function scopeOrderHorarioFilho(EloquentBuilder $query): void
     {
-        $query->orderByRaw("string_to_array(versao, '.')");
+        // $query->orderByRaw("string_to_array(versao, '.')");
+        $query->orderByRaw("
+        CAST(SUBSTRING_INDEX(versao, '.', 1) AS UNSIGNED) ASC,
+        CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(versao, '.', 2), '.', -1) AS UNSIGNED) ASC,
+        CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(versao, '.', 3), '.', -1) AS UNSIGNED) ASC,
+        LENGTH(versao) ASC,
+        versao ASC
+    ");
     }
 }
