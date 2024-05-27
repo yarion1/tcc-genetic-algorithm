@@ -24,12 +24,10 @@ class DisciplinaController extends Controller
 
     public function store(DisciplinaRequest $request)
     {
-        $coordenador_id = Auth::id();
-
         $validated = $request->validated();
     
-        $validated['coordenador_id'] = $coordenador_id;
         $result = $this->service->advancedCreate($validated);
+        $result->load('collegeClass:id,name,period');
         return response()->json(['message' => 'Diciplina Cadastrada.', 'result' => $result]);
     }
 
