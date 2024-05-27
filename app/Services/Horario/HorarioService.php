@@ -116,7 +116,7 @@ class HorarioService extends BaseService
                 $this->eventoRepository->create([
                     'horario_id' => $resultHorario->id,
                     'timeslot_id' => $horario['timeslot_id'],
-                    'timetable_id' =>  85,
+                    'timetable_id' =>  1,
                     'class_id' => $horario['class_id'],
                     'title' => $horario['title'],
                     'startTime' => $horario['startTime'],
@@ -164,6 +164,7 @@ class HorarioService extends BaseService
     {
         $horarioAtual = $this->repository->find(with: ['horario'])->findOrFail($id);
         unset($horarioAtual['versao_atual']);
+        unset($horarioAtual['gerando']);
         $result = $this->criarHorario($horarioAtual->toArray(), true);
         return $result;
     }
