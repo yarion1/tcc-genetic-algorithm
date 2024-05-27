@@ -39,7 +39,7 @@ class TimetableComplete implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('private-user.'. $this->userId),
+            new Channel('user.'. $this->userId),
         ];
     }
     public function broadcastAs()
