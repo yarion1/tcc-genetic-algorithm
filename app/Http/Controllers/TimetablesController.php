@@ -81,18 +81,12 @@ class TimetablesController extends Controller
         if ($timetable) {
             $timetable->days()->sync($dayIds);
         }
-//        $timetableGA = new TimetableGA($timetable);
-//        $timetableGA->run();
+
         event(new TimetablesRequested($timetable));
 
         return response()->json(['message' => 'Timetables are being generated.Check back later'], 200);
     }
 
-    /**
-     * Display a printable view of timetable set
-     *
-     * @param int $id
-     */
     public function view($id)
     {
         $timetable = Timetable::find($id);
