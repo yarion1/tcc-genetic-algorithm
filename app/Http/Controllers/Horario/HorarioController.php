@@ -48,8 +48,9 @@ class HorarioController extends Controller
     public function update(HorarioRequest $request, int $id)
     {
         $validated = $request->all();
-        $this->service->update($id, $validated);
-        return response()->json(['message' => 'Registro Atualizado.']);
+        $result = $this->service->update($id, $validated);
+        $result->load('usuarioCadastro');
+        return response()->json(['message' => 'Registro Atualizado.', 'result' => $result]);
     }
 
 

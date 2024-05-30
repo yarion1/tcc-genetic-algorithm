@@ -16,7 +16,7 @@ class HorarioRequest extends FormRequest
     {
         return [
             'semestre' => 'required|numeric',
-            'horario.*.periodo' => 'required|numeric',
+            'descricao' => 'required|string',
         ];
     }
 }
