@@ -51,7 +51,7 @@ class EventoService extends BaseService
         $resultEvento->load([
             'room', 'day', 'course',
             'room.tipoSala',
-            'professor:id,pessoa_id,carga_horaria,substitute',
+            'professor:id,pessoa_id,carga_horaria,substitute,name',
             'professor.pessoa:id,nome,apelido',
             'professor.unavailable_timeslots',
             'professor.unavailable_timeslots.day:id,daysOfWeek,name',
