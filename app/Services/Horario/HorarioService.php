@@ -191,7 +191,7 @@ class HorarioService extends BaseService
             'horario.room',
             'horario.room.tipoSala',
             'horario.course',
-            'horario.professor:id,pessoa_id,carga_horaria,substitute',
+            'horario.professor:id,pessoa_id,carga_horaria,substitute,name',
             'horario.professor.pessoa:id,nome,apelido',
             'horario.professor.unavailable_timeslots',
             'horario.professor.unavailable_timeslots.day:id,daysOfWeek,name',
