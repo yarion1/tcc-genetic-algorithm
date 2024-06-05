@@ -29,28 +29,33 @@ To get started with the application, follow these installation steps:
    cp .env.example .env
    ```
 
-6. Generate the application key:
+6. Run the setup application.
+
+   ```
+   ./vendor/bin/sail up
+   ```
+7. Generate the application key:
 
    ```
    ./vendor/bin/sail artisan key:generate
    ```
+   
+8. Create a local database and update the `.env` file with the database credentials.
 
-7. Create a local database and update the `.env` file with the database credentials.
-
-8. Run the database migration to set up the necessary tables:
+9. Run the database migration to set up the necessary tables:
 
    ```
    ./vendor/bin/sail artisan migrate
    ```
 
-9. Seed the application with initial data:
+10. Seed the application with initial data:
 
    ```
    ./vendor/bin/sail artisan db:seed
    ```
    
-10. Start the queue to enable timetable generation:
+11. Start the queue to enable timetable generation:
 
     ```
-    php artisan queue:work 
+    ./vendor/bin/sail artisan queue:work 
     ```
