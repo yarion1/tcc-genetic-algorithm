@@ -32,6 +32,9 @@ class Professor extends Model
         'excluido_em'
     ];
 
+    public $cascadeDelete = [
+      'coursesProfessors'
+    ];
 
     /**
      * Declare relationship between a professor and the courses
@@ -63,6 +66,11 @@ class Professor extends Model
     public function schedule(): HasMany
     {
         return $this->HasMany(ProfessorSchedule::class, 'professor_id');
+    }
+
+    public function coursesProfessors(): HasMany
+    {
+        return $this->HasMany(CoursesProfessor::class, 'professor_id');
     }
 
     // public function disciplinas(): HasMany
