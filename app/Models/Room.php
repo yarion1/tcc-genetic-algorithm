@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\ModelFront\TiposSalas;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Room extends Model
 {
@@ -39,5 +40,10 @@ class Room extends Model
     public function tipoSala()
     {
         return $this->belongsTo(TiposSalas::class);
+    }
+    
+    public function schedules() : HasMany
+    {
+        return $this->hasMany(ProfessorSchedule::class);
     }
 }

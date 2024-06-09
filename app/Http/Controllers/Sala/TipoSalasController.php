@@ -44,7 +44,7 @@ class TipoSalasController extends Controller
 
     public function destroy(int $id)
     {
-        $this->service->delete($id);
+        $this->service->delete($id, ['salas']);
         return response()->json(['message' => 'Registro Excluído.']);
     }
 }

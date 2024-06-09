@@ -19,6 +19,10 @@ class Horario extends BaseModel
         'excluido_em'
     ];
 
+    public $cascadeDelete = [
+        'horario',
+   ];
+
     public function horario(): HasMany
     {
         return $this->hasMany(ProfessorSchedule::class, 'horario_id');

@@ -3,8 +3,10 @@
 namespace App\Models\ModelFront;
 
 use App\Models\ModelFront\Base\BaseModel;
+use App\Models\Room;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TiposSalas extends BaseModel
 {
@@ -33,8 +35,8 @@ class TiposSalas extends BaseModel
       );
   }
 
-  public function salas()
+  public function salas() : HasMany
     {
-        return $this->hasMany(Sala::class);
+        return $this->hasMany(Room::class, 'tipo_sala_id');
     }
 }

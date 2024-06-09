@@ -46,7 +46,7 @@ class DisciplinaController extends Controller
 
     public function destroy(int $id)
     {
-        $this->service->delete($id);
+        $this->service->delete($id, ['professors']);
         return response()->json(['message' => 'Diciplina Excluída.']);
     }
 }
