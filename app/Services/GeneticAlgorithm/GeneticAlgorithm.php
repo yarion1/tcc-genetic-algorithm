@@ -2,6 +2,8 @@
 
 namespace App\Services\GeneticAlgorithm;
 
+use Illuminate\Support\Facades\Log;
+
 class GeneticAlgorithm
 {
     /**
@@ -112,6 +114,7 @@ class GeneticAlgorithm
 
         $timetable->createClasses($individual);
         $clashes = $timetable->calcClashes();
+        Log::channel('simple')->info($clashes);
         $fitness = 1.0 / ($clashes + 1);
 
         $individual->setFitness($fitness);

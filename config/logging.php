@@ -54,6 +54,14 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'simple' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/simple.log'),
+            'level' => 'debug',
+            'tap' => [App\Logging\CustomFormatter::class],
+            'replace_placeholders' => true,
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

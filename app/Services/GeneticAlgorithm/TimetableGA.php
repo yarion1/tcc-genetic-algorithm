@@ -162,11 +162,11 @@ class TimetableGA
 
             Individual::$partialApplied = false;
 
-            $maxGenerations = 400;
+            $maxGenerations = 100;
 
             $timetable = $this->initializeTimetable();
 
-            $algorithm = new GeneticAlgorithm(150, 0.01, 0.9, 2, 10);
+            $algorithm = new GeneticAlgorithm(100, 0.01, 0.9, 2, 10);
 
             $horario_id = $this->timetable->horario_id;
 
@@ -183,6 +183,7 @@ class TimetableGA
                 $fittest = $population->getFittest(0);
 
                 print "Generation: " . $generation . "(" . $fittest->getFitness() . ") - ";
+                Log::channel('simple')->info("Generation: ".$generation);
                 print $fittest;
                 print "\n";
 

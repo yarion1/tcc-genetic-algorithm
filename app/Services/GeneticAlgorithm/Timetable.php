@@ -485,7 +485,6 @@ class Timetable
         $days = Day::all();
 
         foreach ($this->classes as $id => $classA) {
-
             $roomCapacity = $this->getRoom($classA->getRoomId())->getCapacity();
             $roomAvailable = $this->getRoom($classA->getRoomId())->getOccupiedSlots();
             $groupSize = $this->getGroup($classA->getGroupId())->getSize();
